@@ -12,7 +12,7 @@
                 <div class="card-body">
                     <div class="row">
 
-                        @include('common.searchbox')
+                        @include('common.searchboxuser')
 
                         <div class="col-sm-14 col-md-6">
                         </div>
@@ -23,7 +23,7 @@
                                     <ul class="tabs tab-pills">
                                         <li>
                                             <a href="javascript:void(0)" class="tabmenu bg-dark" data-toggle="modal"
-                                                data-target="#theModal">Agregar Usuario</a>
+                                                data-target="#theModal">NUEVO USUARIO</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -49,50 +49,55 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($data as $r)
-                                    <tr>
-                                        <td class="text-center">
-                                            <h6>{{$r->name}}</h6>
-                                        </td>
+                                    @if(count($data) <= 0) <tr>
+                                        <td class="text-center" colspan="8">NO HAY RESULTADOS</td>
+                                        </tr>
+                                        @else
+                                        @foreach($data as $r)
+                                        <tr>
+                                            <td class="text-center">
+                                                <h6>{{$r->first_name . ' ' .$r->last_name}}</h6>
+                                            </td>
 
-                                        <td class="text-center">
-                                            <h6>{{$r->phone}}</h6>
-                                        </td>
-                                        <td class="text-center">
-                                            <h6>{{$r->email}}</h6>
-                                        </td>
-                                        <td class="text-center">
-                                            <span
-                                                class="badge {{ $r->status == 'ACTIVE' ? 'badge-success' : 'badge-danger' }} text-uppercase">{{$r->status}}</span>
-                                        </td>
-                                        <td class="text-center text-uppercase">
-                                            <h6>{{$r->profile}}</h6>
-                                            <small><b>Roles:</b>{{implode(',',$r->getRoleNames()->toArray())}}</small>
-                                        </td>
+                                            <td class="text-center">
+                                                <h6>{{$r->phone}}</h6>
+                                            </td>
+                                            <td class="text-center">
+                                                <h6>{{$r->email}}</h6>
+                                            </td>
+                                            <td class="text-center">
+                                                <span
+                                                    class="badge {{ $r->status == 'ACTIVE' ? 'badge-success' : 'badge-danger' }} text-uppercase">{{$r->status}}</span>
+                                            </td>
+                                            <td class="text-center text-uppercase">
+                                                <h6>{{$r->profile}}</h6>
+                                                <small><b>Roles:</b>{{implode(',',$r->getRoleNames()->toArray())}}</small>
+                                            </td>
 
-                                        <td class="text-center">
-                                            @if($r->image != null)
-                                            <img class="card-img-top img-fluid"
-                                                src="{{ asset('storage/users/'.$r->image) }}">
-                                            @endif
-                                        </td>
+                                            <td class="text-center">
+                                                @if($r->image != null)
+                                                <img class="card-img-top img-fluid"
+                                                    src="{{ asset('storage/users/'.$r->image) }}">
+                                                @endif
+                                            </td>
 
-                                        <td class="text-center">
-                                            <a href="javascript:void(0)" wire:click="edit({{$r->id}})"
-                                                class="btn btn-dark mtmobile" title="Edit">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            @if(Auth()->user()->id != $r->id)
-                                            <a href="javascript:void(0)" onclick="Confirm('{{$r->id}}')"
-                                                class="btn btn-danger" title="Delete">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                            @endif
+                                            <td class="text-center">
+                                                <a href="javascript:void(0)" wire:click="edit({{$r->id}})"
+                                                    class="btn btn-edit mtmobile" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                @if(Auth()->user()->id != $r->id)
+                                                <a href="javascript:void(0)" onclick="Confirm('{{$r->id}}')"
+                                                    class="btn btn-danger" title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                                @endif
 
 
-                                        </td>
-                                    </tr>
-                                    @endforeach
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                        @endif
                                 </tbody>
                             </table>
                             {{$data->links()}}
@@ -122,26 +127,28 @@
     }
 
     .widget-chart-one .widget-heading .tabs a {
-        font-size: 19px;
+        font-size: 15px;
         letter-spacing: 1px;
         font-weight: 600;
         padding: 5px 7px;
-        background: #23741e !important;
+        background: #6a5330 !important;
         color: #fff;
         border-radius: 4px;
         margin-left: 20px;
         margin-top: 5px;
+        padding: 12px;
     }
 
     .widget-chart-one .widget-heading .tabs a:hover {
-        font-size: 19px;
+        font-size: 15px;
         letter-spacing: 1px;
         font-weight: 600;
         padding: 5px 7px;
-        background: #113a0f !important;
+        background: #cb8a0d !important;
         color: #fff;
         border-radius: 4px;
         margin-left: 20px;
+        padding: 11px;
     }
 
     .widget-chart-one .widget-heading {
@@ -152,12 +159,12 @@
     .card-header {
         padding: .75rem 1.25rem;
         margin-bottom: 0;
-        background-color: #23741e;
+        background-color: #cb8a0d;
         border-bottom: 1px solid rgba(0, 0, 0, .125);
     }
 
     .table>thead>tr>th {
-        background: #23741e !important;
+        background: #cb8a0d !important;
         font-weight: 700;
         font-size: 13px;
         letter-spacing: 1px;
@@ -167,8 +174,8 @@
     .page-item.active .page-link {
         z-index: 3;
         color: #fff;
-        background-color: #23741e;
-        border-color: #23741e;
+        background-color: #cb8a0d;
+        border-color: #cb8a0d;
     }
 
     .tbody {
@@ -179,7 +186,7 @@
 
         /*Firefox*/
         overflow: scroll;
-        scrollbar-color: #23741e transparent;
+        scrollbar-color: #cb8a0d transparent;
         scrollbar-width: thin;
 
         /*Webkit*/
@@ -213,7 +220,7 @@
     }
 
     .table-responsive:hover::-webkit-scrollbar-thumb {
-        background-color: #23741e;
+        background-color: #cb8a0d;
     }
     </style>
 

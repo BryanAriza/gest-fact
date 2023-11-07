@@ -28,7 +28,7 @@ hr {
 }
 
 .text-company {
-    color: #666666;
+    color: #000000;
     font-size: 9pt;
 }
 
@@ -47,7 +47,7 @@ hr {
     padding: 5px 2px;
     text-align: center;
     vertical-align: middle;
-    background-color: #515365;
+    background-color: #cb8a0d;
     color: #ffffff;
 }
 
@@ -170,3 +170,14 @@ hr {
     float: left !important;
 }
 small { font-size: 9pt  }
+
+.watermark {
+    position: absolute;
+    top: 50%; /* Ajusta la posición vertical */
+    left: 50%; /* Ajusta la posición horizontal */
+    transform: translate(-50%, -50%); /* Centra la marca de agua */
+    width: 50%;
+    opacity: 0.3; /* Ajusta la opacidad según tus preferencias */
+}
+
+

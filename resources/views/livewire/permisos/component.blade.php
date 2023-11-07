@@ -11,7 +11,7 @@
                 <div class="card-body">
                     <div class="row">
 
-                        @include('common.searchboxrol')
+                        @include('common.searchboxuser')
 
                         <div class="col-sm-14 col-md-6">
                         </div>
@@ -22,7 +22,7 @@
                                     <ul class="tabs tab-pills">
                                         <li>
                                             <a href="javascript:void(0)" class="tabmenu bg-dark" data-toggle="modal"
-                                                data-target="#theModal">Agregar Permiso</a>
+                                                data-target="#theModal">AGREGAR PERMISO</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -56,7 +56,7 @@
 
                                     <td class="text-center">
                                         <a href="javascript:void(0)" wire:click="Edit({{$permiso->id}})"
-                                            class="btn btn-dark mtmobile" title="Editar Registro">
+                                            class="btn btn-edit mtmobile" title="Editar Registro">
                                             <i class="fas fa-edit"></i>
                                         </a>
 
@@ -99,26 +99,28 @@
     }
 
     .widget-chart-one .widget-heading .tabs a {
-        font-size: 19px;
+        font-size: 15px;
         letter-spacing: 1px;
         font-weight: 600;
         padding: 5px 7px;
-        background: #23741e !important;
+        background: #6a5330 !important;
         color: #fff;
         border-radius: 4px;
         margin-left: 20px;
         margin-top: 5px;
+        padding: 12px;
     }
 
     .widget-chart-one .widget-heading .tabs a:hover {
-        font-size: 19px;
+        font-size: 15px;
         letter-spacing: 1px;
         font-weight: 600;
         padding: 5px 7px;
-        background: #113a0f !important;
+        background: #cb8a0d !important;
         color: #fff;
         border-radius: 4px;
         margin-left: 20px;
+        padding: 11px;
     }
 
     .widget-chart-one .widget-heading {
@@ -129,12 +131,12 @@
     .card-header {
         padding: .75rem 1.25rem;
         margin-bottom: 0;
-        background-color: #23741e;
+        background-color: #cb8a0d;
         border-bottom: 1px solid rgba(0, 0, 0, .125);
     }
 
     .table>thead>tr>th {
-        background: #23741e !important;
+        background: #cb8a0d !important;
         font-weight: 700;
         font-size: 13px;
         letter-spacing: 1px;
@@ -144,8 +146,8 @@
     .page-item.active .page-link {
         z-index: 3;
         color: #fff;
-        background-color: #23741e;
-        border-color: #23741e;
+        background-color: #cb8a0d;
+        border-color: #cb8a0d;
     }
 
     .tbody {
@@ -156,7 +158,7 @@
 
         /*Firefox*/
         overflow: scroll;
-        scrollbar-color: #23741e transparent;
+        scrollbar-color: #cb8a0d transparent;
         scrollbar-width: thin;
 
         /*Webkit*/
@@ -190,7 +192,7 @@
     }
 
     .table-responsive:hover::-webkit-scrollbar-thumb {
-        background-color: #23741e;
+        background-color: #cb8a0d;
     }
 
     </style>

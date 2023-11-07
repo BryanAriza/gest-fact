@@ -132,12 +132,12 @@
         .card-header {
             padding: .75rem 1.25rem;
             margin-bottom: 0;
-            background-color: #23741e;
+            background-color: #cb8a0d;
             border-bottom: 1px solid rgba(0, 0, 0, .125);
         }
 
         .table>thead>tr>th {
-            background: #23741e !important;
+            background: #cb8a0d !important;
             font-weight: 700;
             font-size: 13px;
             letter-spacing: 1px;
@@ -147,8 +147,8 @@
         .page-item.active .page-link {
             z-index: 3;
             color: #fff;
-            background-color: #23741e;
-            border-color: #23741e;
+            background-color: #cb8a0d;
+            border-color: #cb8a0d;
         }
 
         .tbody {
@@ -193,7 +193,7 @@
         }
 
         .table-responsive:hover::-webkit-scrollbar-thumb {
-            background-color: #23741e;
+            background-color: #cb8a0d;
         }
         </style>
 

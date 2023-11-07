@@ -4,7 +4,7 @@
 	
 <div class="col-sm-12 col-md-8">
 	<div class="form-group">
-		<label >Nombre</label>
+		<label ><strong>Nombre Completo</strong></label>
 		<input type="text" wire:model.lazy="name" 
 		class="form-control" placeholder="ej: Bryan Ariza"  >
 		@error('name') <span class="text-danger er">{{ $message}}</span>@enderror
@@ -12,7 +12,7 @@
 </div>
 <div class="col-sm-12 col-md-4">
 	<div class="form-group">
-		<label >Teléfono</label>
+		<label ><strong>Teléfono</strong></label>
 		<input type="text" wire:model.lazy="phone" 
 		class="form-control" placeholder="ej: 351 115 9550" maxlength="10" >
 		@error('phone') <span class="text-danger er">{{ $message}}</span>@enderror
@@ -20,7 +20,7 @@
 </div>
 <div class="col-sm-12 col-md-6">
 	<div class="form-group">
-		<label >Email</label>
+		<label ><strong>Correo Electrónico</strong></label>
 		<input type="text" wire:model.lazy="email" 
 		class="form-control" placeholder="ej: prueba@gmail.com"  >
 		@error('email') <span class="text-danger er">{{ $message}}</span>@enderror
@@ -28,7 +28,7 @@
 </div>
 <div class="col-sm-12 col-md-6">
 	<div class="form-group">
-		<label >Contraseña</label>
+		<label ><strong>Contraseña</strong></label>
 		<input type="password" wire:model.lazy="password" 
 		class="form-control"   >
 		@error('password') <span class="text-danger er">{{ $message}}</span>@enderror
@@ -36,7 +36,7 @@
 </div>
 <div class="col-sm-12 col-md-6">
 	<div class="form-group">
-		<label >Estatus</label>
+		<label><strong>Estatus</strong></label>
 		<select wire:model.lazy="status" class="form-control">
 			<option value="Elegir" selected>Elegir</option>
 			<option value="Active" selected>Activo</option>
@@ -47,7 +47,7 @@
 </div>
 <div class="col-sm-12 col-md-6">
 	<div class="form-group">
-		<label >Asignar Role</label>
+		<label ><strong>Asignar Role</strong></label>
 		<select wire:model.lazy="profile" class="form-control">
 			<option value="Elegir" selected>Elegir</option>
 			@foreach($roles as $role)
@@ -60,7 +60,7 @@
 
 <div class="col-sm-12 col-md-6">
 	<div class="form-group">
-		<label >Imágen de Perfil</label>
+		<label ><strong>Imágen de Perfil</strong></label>
 		<input type="file" wire:model="image" accept="image/x-png, image/jpeg, image/gif" class="form-control">
 		@error('image') <span class="text-danger er">{{ $message}}</span>@enderror
 
