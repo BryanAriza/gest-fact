@@ -12,12 +12,9 @@ use App\Http\Livewire\CashoutController;
 use App\Http\Livewire\ReportsController;
 use App\Http\Livewire\CitasController;
 use App\Http\Livewire\PermisosController;
+use App\Http\Livewire\CategoriesController;
 use App\Http\Controllers\ExportController;
-use App\Http\Livewire\AgendaController;
-use App\Http\Livewire\MasivoAgendaController;
 use App\Http\Livewire\ProductsController;
-use App\Http\Livewire\ImportarDatosController;
-use App\Http\Livewire\ConsolidadoController;
 use App\Http\Controllers\ImportarExcelController;
 use App\Http\Livewire\ProfileController;
 use App\Http\Livewire\PasswordController;
@@ -37,36 +34,6 @@ Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
 
-    
-
-    // Route::group(['middleware' => ['role_or_permission:SUPER|ADMIN|GESTOR|Home_Index|UploadPac_Index|UploadAgenda_Index']], function () {
-    //     Route::resource('/importar', ImportarExcelController::class)->only(['index', 'store']);
-    //     Route::get('/importAgenda', CitasController::class);
-        
-    // });
-
-    // Route::group(['middleware' => ['role_or_permission:SUPER|ADMIN|GESTOR|Citas_Index|Pac_Index|Agenda_Index']], function () {
-    //     Route::get('/home', PacientesController::class);
-    //     Route::get('/informePaciente', PacientesController::class);
-    //     Route::get('/informeAgenda', AgendaController::class);
-        
-    // });
-    // Route::group(['middleware' => ['role_or_permission:SUPER|ADMIN|GESTOR|UploadCitas_Index']], function () {
-    //     Route::get('/agendaMasiva', MasivoAgendaController::class);
-        
-    // });
-
-    // Route::group(['middleware' => ['role_or_permission:SUPER|ADMIN|GESTOR|Reports_Index']], function () {
-    //     //Route::resource('/importar', ImportarExcelController::class)->only(['index', 'store']);
-    //     Route::get('/consolidado', ConsolidadoController::class);
-
-    //     //reportes EXCEL
-    //     Route::get('/reportConso/excel/', [ExportController::class, 'reportConsoEspe']);
-    //     Route::get('/reportDeta/excel/', [ExportController::class, 'reportEspeDeta']);
-    //     Route::get('/reportCitas/excel/{f1}/{f2}', [ExportController::class, 'reportCitas']);
-    //     Route::get('/reportDetaCi/excel/{f1}/{f2}', [ExportController::class, 'reportCitaDet']);        
-        
-    // });
 
     Route::group(['middleware' => ['role_or_permission:ADMIN|Config_Index|User_Index|Role_Index|Permission_Index|Asignar_Index']], function () {
       
@@ -81,9 +48,7 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['middleware' => ['role_or_permission:ADMIN|Gest_Index|Product_Index|Category_Index']], function () {
 
         Route::get('/products', ProductsController::class);
-        // Route::get('/permisos', PermisosController::class);
-        // Route::get('/asignar', AsignarController::class);  
-
+        Route::get('/categories', CategoriesController::class);
     });
 
     Route::group(['middleware' => ['role_or_permission:ADMIN|FACTURADOR|Reports_Index']], function () {
@@ -97,6 +62,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('reportProduct/pdf/', [ExportController::class, 'reportPdfProduc']);
         Route::get('reportProduct/pdf/{f1}', [ExportController::class, 'reportPdfProduc']);
         Route::get('reportProduct/pdf/{f1}/{f2}', [ExportController::class, 'reportPdfProduc']);
+
+        Route::get('/reportCategory/excel/', [ExportController::class, 'reportCategory']);
+        Route::get('/reportCategory/excel/{f1}', [ExportController::class, 'reportCategory']);
+
+        //reportes PDF
+        Route::get('reportCategory/pdf/', [ExportController::class, 'reportPdfCate']);
+        Route::get('reportCategory/pdf/{f1}', [ExportController::class, 'reportPdfCate']);
         
         
         // Route::get('/reportDeta/excel/', [ExportController::class, 'reportEspeDeta']);
