@@ -10,4 +10,10 @@ class Customer extends Model
     use HasFactory;
     protected $fillable = 
             ['first_name','last_name','id_type','document','phone','email'];
+
+
+    public function salesHeaders()
+    {
+        return $this->hasMany(SalesHeader::class, 'id_customer');
+    }
 }

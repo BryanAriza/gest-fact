@@ -253,5 +253,85 @@ class ExportController extends Controller
 
     }
 
+    public function reportCustomer($search = null){
+ 
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $columns = ['ID','NOMBRE DEL CLIENTE','TIPO DE DOCUMENTO','NUMERO DE DOCUMENTO','TELEFONO','CORREO ELECTRONICO'];
+        
+        $query = DB::table('customers')
+                ->join('type_documents', 'customers.id_type', '=', 'type_documents.id')
+                ->select('customers.id',
+                        DB::raw("CONCAT(customers.first_name,' ',customers.last_name) AS full_name"),
+                        'type_documents.name_document',
+                        'customers.document',
+                        'customers.phone',
+                        'customers.email',)
+                ->where(function ($query) use ($search) {
+                    if ($search > 0) {
+                        $query->where('customers.document','like', '%' . $search.'%');
+                    }
+                });
+                    
+                $data = $query->get();
+
+            
+                $dataArray = $data->map(function($item) {
+
+                    return [
+                        $item->id,
+                        $item->full_name,
+                        $item->name_document,
+                        $item->document,
+                        $item->phone,
+                        $item->email
+                    ];
+                })->toArray();
+
+
+                //dd($data,$dataArray);
+
+        $sheet->fromArray(array_merge([$columns], $dataArray));
+
+        // $sheet->fromArray(array_merge([$columns], $data->toArray()));
+
+        // Aplicar estilos
+        $styleArray = [
+            'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
+            'alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => ['rgb' => 'cb7400'],
+            ],
+            
+        ];
+
+        $sheet->getStyle('A1:F1')->applyFromArray($styleArray);
+
+        foreach (range('A', 'F') as $column) {
+            $sheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+
+        return response()->stream(
+            function () use ($writer) {
+                $writer->save('php://output');
+            },
+            200,
+            [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => 'attachment; filename="Reporte Clientes Actuales"'. now() .'".xlsx"',
+            ]
+        );
+
+    }
+
 
 }

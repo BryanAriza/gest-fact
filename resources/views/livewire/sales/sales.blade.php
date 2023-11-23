@@ -12,53 +12,36 @@
                 <div class="widget-heading">
                     <div class="row">
 
-                        @can('Category_Search')
-                        @include('common.searchboxuser')
+                        @can('Product_Search')
+                        @include('common.searchbox')
                         @endcan
-
-                        <div class="col-sm-14 col-md-3 py-4">
-                            @if (count($datos) != 0)
-                            <a class="btn btn-md btn-success font-weight-bold mt-2 text-center"
-                                href="{{ url('reportCategory/excel' . '/' . $search) }}" target="_blank"
-                                title="Exportar XLS de productos">
-                                <i class="fas fa-file-excel mr-2 ml-1 mt-1"></i>
-                                Excel
-                            </a>
-                            <a class="btn btn-md btn-danger font-weight-bold mt-2"
-                                href="{{ url('reportCategory/pdf' . '/' . $search) }}" target="_blank"
-                                title="Exportar PDF de productos">
-                                <i class="fas fa-file-pdf mr-2 ml-1 mt-1"></i>
-                                PDF
-                            </a>
-                            @else
-                            <a class="btn btn-md btn-success font-weight-bold mt-2" disabled>
-                                <i class="fas fa-file-excel mr-2 ml-1 mt-1"></i>
-                                Excel
-                            </a>
-                            <a class="btn btn-md btn-danger font-weight-bold mt-2" disabled>
-                                <i class="fas fa-file-pdf mr-2 ml-1 mt-1"></i>
-                                PDF
-                            </a>
-                            @endif
-                        </div>
                         <div class="col-lg-3 col-md-3 col-sm-3">
+                            <h6 style="font-weight: bold;">{{ __('Categoría de Productos') }}</h6>
+                            <select wire:model="selectCategory" class="form-control">
+                                <option value="" selected>== Selecciona una categoría ==</option>
+                                @foreach ($category as $cat)
+                                <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-sm-14 col-md-3 py-4">
 
                         </div>
 
-                        @can('Category_Create')
+                        @can('Product_Create')
                         <div class="col-sm-3 col-md-3 py-4">
                             <div class="text-center">
                                 <div class="widget-heading">
                                     <ul class="tabs tab-pills">
                                         <li>
-                                            <a href="javascript:void(0)" class="tabmenu bg-dark" data-toggle="modal"
-                                                data-target="#theModal">AGREGAR CATEGORIA</a>
+                                            <a href="{{url('ventaPos')}}" class="tabmenu bg-dark"><i class="fas fa-shopping-cart"></i>&nbsp;CARRITO DE COMPRAS</a>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                         @endcan
+
                     </div>
 
 
@@ -66,8 +49,12 @@
                         <table class="table table-bordered table-hover table-striped mt-1">
                             <thead class="text-white" style="background: #3B3F5C">
                                 <tr>
-                                    <th class="table-th text-white text-center">NOMBRE CATEGORÍA</th>
+                                    <th class="table-th text-white text-center">NOMBRE PRODUCTO</th>
                                     <th class="table-th text-white text-center">DESCRIPCIÓN</th>
+                                    <th class="table-th text-white text-center">CATEGORIA PRODUCTO</th>
+                                    <th class="table-th text-white text-center">PRECIO UNITARIO</th>
+                                    <th class="table-th text-white text-center">EXISTENCIAS PRODUCTO</th>
+                                    <th class="table-th text-white text-center">IVA PRODUCTO</th>
                                     <th class="table-th text-white text-center">ACCIONES</th>
                                 </tr>
                             </thead>
@@ -76,27 +63,32 @@
                                     <td class="text-center" colspan="8">NO HAY RESULTADOS</td>
                                     </tr>
                                     @else
-                                    @foreach($datos as $datCat)
+                                    @foreach($datos as $datosCat)
                                     <tr>
                                         <td class="text-center">
-                                            <h6>{{$datCat->category_name}}</h6>
+                                            <h6>{{$datosCat->product_name}}</h6>
                                         </td>
                                         <td class="text-center">
-                                            <h6>{{$datCat->description}}</h6>
+                                            <h6>{{$datosCat->description}}</h6>
                                         </td>
+                                        <td class="text-center">
+                                            <h6>{{$datosCat->category_name}}</h6>
+                                        </td>
+                                        <td class="text-center">
+                                            <h6>${{number_format($datosCat->price)}}</h6>
+                                        </td>
+                                        <td class="text-center">
+                                            <h6>{{$datosCat->stock}}</h6>
+                                        </td>
+                                        <td class="text-center">
+                                            <h6>{{$datosCat->iva}}%</h6>
+                                        </td>
+                                        <td class="text-center">
 
-                                        <td class="text-center">
-                                            @can('Category_Update')
-                                            <a href="javascript:void(0)" wire:click="Edit({{$datCat->id}})"
-                                                class="btn btn-edit" title="Editar Categoría">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            @endcan
-                                            @can('Category_Destroy')
-                                            <a href="javascript:void(0)" onclick="Confirm('{{$datCat->id}}')"
-                                                class="btn btn-danger" title="Eliminar Categoría">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
+                                            @can('Sales_Create')
+                                            <button type="button" wire:click.prevent="ScanCode('{{$datosCat->id}}')"
+                                                class="btn btn-success"><i class="fas fa-shopping-cart"></i>
+                                            </button>
                                             @endcan
                                         </td>
                                     </tr>
@@ -119,7 +111,7 @@
 
 
         </div>
-        @include('livewire.categories.form')
+        @include('livewire.products.form')
     </div>
     <style>
     .sales .widget {
@@ -260,16 +252,6 @@
                 type: 'success',
                 showConfirmButton: false,
                 timer: 1600
-            })
-        });
-        window.livewire.on('product-not-deleted', msg => {
-            // noty
-            swal({
-                title: 'Se ha Producido un Error!',
-                text: msg,
-                type: 'error',
-                showConfirmButton: false,
-                timer: 1900
             })
         });
         window.livewire.on('modal-show', msg => {

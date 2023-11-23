@@ -6,14 +6,14 @@ use App\Models\Product;
 
 trait CartTrait {
 
-    public function ScanearCode($barcode, $cant = 1)
+    public function ScanearCode($id, $cant = 1)
     {
 
-        $product = Product::where('barcode', $barcode)->first();
+        $product = Product::where('id', $id)->first();
 
         if($product == null || empty($product))
         {
-                $this->emit('scan-notfound','El producto no está registrado*');
+                $this->emit('scan-notfound','El producto no está registrado');
         }  else {
 
                 if($this->InCart($product->id))
@@ -24,17 +24,17 @@ trait CartTrait {
 
                 if($product->stock <1)
                 {
-                        $this->emit('no-stock','Stock insuficiente *');
+                        $this->emit('no-stock','Stock insuficiente');
                         return;
                 }
 
 
-                Cart::add($product->id, $product->name, $product->price, $cant, $product->imagen);
+                Cart::add($product->id, $product->product_name, $product->price, $cant);
                 //Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
                 $this->total = Cart::getTotal();
                 $this->itemsQuantity = Cart::getTotalQuantity();
 
-                $this->emit('scan-ok','Producto agregado*');               
+                $this->emit('scan-ok','Producto agregado');               
 
 
         }
@@ -58,22 +58,22 @@ public function IncreaseQuantity($product, $cant = 1)
         
         $exist = Cart::get($product->id);
         if($exist)
-                $title = 'Cantidad actualizada*';
+                $title = 'Cantidad actualizada';
         else
-                $title ='Producto agregado*';
+                $title ='Producto agregado';
 
         if($exist)
         {
                 if($product->stock < ($cant + $exist->quantity))
                 {
-                        $this->emit('no-stock','Stock insuficiente *');
+                        $this->emit('no-stock','Stock insuficiente');
                         return;
                 }
         }
 
 
 //        Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
-        Cart::add($product->id, $product->name, $product->price, $cant, $product->imagen);
+        Cart::add($product->id, $product->product_name, $product->price, $cant);
 
         $this->total = Cart::getTotal();
         $this->itemsQuantity = Cart::getTotalQuantity();
@@ -89,16 +89,16 @@ public function updateQuantity($product, $cant = 1)
                 //$product = Product::find($productId);
         $exist = Cart::get($product->id);
         if($exist)
-                $title = 'Cantidad actualizada*';
+                $title = 'Cantidad actualizada';
         else
-                $title ='Producto agregado*';
+                $title ='Producto agregado';
 
 
         if($exist)
         {
                 if($product->stock < $cant)
                 {
-                        $this->emit('no-stock','Stock insuficiente *');
+                        $this->emit('no-stock','Stock insuficiente');
                         return;
                 }
         }
@@ -108,7 +108,7 @@ public function updateQuantity($product, $cant = 1)
 
         if($cant > 0)
         {
-                Cart::add($product->id, $product->name, $product->price, $cant, $product->imagen);
+                Cart::add($product->id, $product->product_name, $product->price, $cant);
                 //Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
 
                 $this->total = Cart::getTotal();
@@ -128,7 +128,7 @@ public function removeItem($productId)
         $this->total = Cart::getTotal();
         $this->itemsQuantity = Cart::getTotalQuantity();
 
-        $this->emit('scan-ok', 'Producto eliminado*');
+        $this->emit('scan-ok', 'Producto eliminado');
 }
 
 public function decreaseQuantity($productId)
@@ -136,18 +136,18 @@ public function decreaseQuantity($productId)
         $item = Cart::get($productId);
         Cart::remove($productId);
         
-        // si el producto no tiene imagen, mostramos una default
-        $img = (count($item->attributes) > 0 ? $item->attributes[0] : Product::find($productId)->imagen);
+        // // si el producto no tiene imagen, mostramos una default
+        // $img = (count($item->attributes) > 0 ? $item->attributes[0] : Product::find($productId));
         
         $newQty = ($item->quantity) - 1;
 
         if($newQty > 0)                 
-                Cart::add($item->id, $item->name, $item->price, $newQty, $img);                
+                Cart::add($item->id, $item->product_name, $item->price, $newQty);                
 
 
         $this->total = Cart::getTotal();
         $this->itemsQuantity = Cart::getTotalQuantity();
-        $this->emit('scan-ok', 'Cantidad actualizada*');
+        $this->emit('scan-ok', 'Cantidad actualizada');
 
 
 }
@@ -160,7 +160,7 @@ public function trashCart()
         $this->total = Cart::getTotal();
         $this->itemsQuantity = Cart::getTotalQuantity();
 
-        $this->emit('scan-ok', 'Carrito vacío*');
+        $this->emit('scan-ok', 'Carrito vacío');
 
 }
 

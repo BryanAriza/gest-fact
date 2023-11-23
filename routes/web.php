@@ -12,7 +12,9 @@ use App\Http\Livewire\CashoutController;
 use App\Http\Livewire\ReportsController;
 use App\Http\Livewire\CitasController;
 use App\Http\Livewire\PermisosController;
+use App\Http\Livewire\CustomerController;
 use App\Http\Livewire\CategoriesController;
+use App\Http\Livewire\SalesController;
 use App\Http\Controllers\ExportController;
 use App\Http\Livewire\ProductsController;
 use App\Http\Controllers\ImportarExcelController;
@@ -37,7 +39,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::group(['middleware' => ['role_or_permission:ADMIN|Config_Index|User_Index|Role_Index|Permission_Index|Asignar_Index']], function () {
       
-        Route::get('/home', UsersController::class);
+        //Route::get('/home', UsersController::class);
         Route::get('/users', UsersController::class);
         Route::get('/roles', RolesController::class);
         Route::get('/permisos', PermisosController::class);
@@ -49,6 +51,20 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/products', ProductsController::class);
         Route::get('/categories', CategoriesController::class);
+    });
+
+    Route::group(['middleware' => ['role_or_permission:ADMIN|FACTURADOR|Customer_Index']], function () {
+
+        Route::get('/clientes', CustomerController::class);
+    
+    });
+
+    Route::group(['middleware' => ['role_or_permission:ADMIN|FACTURADOR|Sales_Index']], function () {
+
+        Route::get('/productosVenta', SalesController::class);
+        Route::get('/home', SalesController::class);
+        Route::get('/ventaPos', PosController::class);
+    
     });
 
     Route::group(['middleware' => ['role_or_permission:ADMIN|FACTURADOR|Reports_Index']], function () {
@@ -69,6 +85,9 @@ Route::middleware(['auth'])->group(function () {
         //reportes PDF
         Route::get('reportCategory/pdf/', [ExportController::class, 'reportPdfCate']);
         Route::get('reportCategory/pdf/{f1}', [ExportController::class, 'reportPdfCate']);
+
+        Route::get('/reportCliente/excel/', [ExportController::class, 'reportCustomer']);
+        Route::get('/reportCliente/excel/{f1}', [ExportController::class, 'reportCustomer']);
         
         
         // Route::get('/reportDeta/excel/', [ExportController::class, 'reportEspeDeta']);

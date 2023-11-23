@@ -52,46 +52,5 @@
             @error('email') <span class="text-danger er">{{ $message}}</span>@enderror
         </div>
     </div>
-    <div class="col-sm-12 col-md-6">
-        <div class="form-group">
-            <label><strong>Contraseña</strong></label>
-            <input type="password" wire:model.lazy="password" class="form-control">
-            @error('password') <span class="text-danger er">{{ $message}}</span>@enderror
-        </div>
-    </div>
-    <div class="col-sm-12 col-md-6">
-        <div class="form-group">
-            <label><strong>Estatus</strong></label>
-            <select wire:model.lazy="status" class="form-control">
-                <option value="Elegir" selected>Elegir</option>
-                <option value="Active" selected>Activo</option>
-                <option value="Locked" selected>Bloqueado</option>
-            </select>
-            @error('status') <span class="text-danger er">{{ $message}}</span>@enderror
-        </div>
-    </div>
-    <div class="col-sm-12 col-md-6">
-        <div class="form-group">
-            <label><strong>Asignar Role</strong></label>
-            <select wire:model.lazy="rol" class="form-control">
-                <option value="Elegir" selected>Elegir</option>
-                @foreach($roles as $role)
-                <option value="{{$role->name}}" selected>{{$role->name}}</option>
-                @endforeach
-            </select>
-            @error('rol') <span class="text-danger er">{{ $message}}</span>@enderror
-        </div>
-    </div>
-
-    <div class="col-sm-12 col-md-6">
-        <div class="form-group">
-            <label><strong>Imágen de Perfil</strong></label>
-            <input type="file" wire:model="image" accept="image/x-png, image/jpeg, image/gif" class="form-control">
-            @error('image') <span class="text-danger er">{{ $message}}</span>@enderror
-
-        </div>
-    </div>
-</div>
-
 
 @include('common.modalFooter')

@@ -12,53 +12,44 @@
                 <div class="widget-heading">
                     <div class="row">
 
-                        @can('Category_Search')
-                        @include('common.searchboxuser')
+                        @can('Customer_Search')
+                                @include('common.searchboxuser')
                         @endcan
-
                         <div class="col-sm-14 col-md-3 py-4">
-                            @if (count($datos) != 0)
+                        @if (count($datos) != 0)
                             <a class="btn btn-md btn-success font-weight-bold mt-2 text-center"
-                                href="{{ url('reportCategory/excel' . '/' . $search) }}" target="_blank"
-                                title="Exportar XLS de productos">
+                                href="{{ url('reportCliente/excel' . '/' . $search) }}" target="_blank" title="Exportar XLS de clientes">
                                 <i class="fas fa-file-excel mr-2 ml-1 mt-1"></i>
-                                Excel
+                                Reporte Excel
                             </a>
-                            <a class="btn btn-md btn-danger font-weight-bold mt-2"
-                                href="{{ url('reportCategory/pdf' . '/' . $search) }}" target="_blank"
-                                title="Exportar PDF de productos">
-                                <i class="fas fa-file-pdf mr-2 ml-1 mt-1"></i>
-                                PDF
-                            </a>
-                            @else
+                            
+                        @else
                             <a class="btn btn-md btn-success font-weight-bold mt-2" disabled>
                                 <i class="fas fa-file-excel mr-2 ml-1 mt-1"></i>
-                                Excel
+                                Reporte Excel
                             </a>
-                            <a class="btn btn-md btn-danger font-weight-bold mt-2" disabled>
-                                <i class="fas fa-file-pdf mr-2 ml-1 mt-1"></i>
-                                PDF
-                            </a>
-                            @endif
+                            
+                        @endif
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3">
-
+                        <div class="col-sm-3 col-md-3 py-4">
+                            
                         </div>
 
-                        @can('Category_Create')
+                        @can('Customer_Create')
                         <div class="col-sm-3 col-md-3 py-4">
                             <div class="text-center">
                                 <div class="widget-heading">
                                     <ul class="tabs tab-pills">
                                         <li>
                                             <a href="javascript:void(0)" class="tabmenu bg-dark" data-toggle="modal"
-                                                data-target="#theModal">AGREGAR CATEGORIA</a>
+                                                data-target="#theModal">AGREGAR CLIENTE</a>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                         @endcan
+                        
                     </div>
 
 
@@ -66,8 +57,11 @@
                         <table class="table table-bordered table-hover table-striped mt-1">
                             <thead class="text-white" style="background: #3B3F5C">
                                 <tr>
-                                    <th class="table-th text-white text-center">NOMBRE CATEGORÍA</th>
-                                    <th class="table-th text-white text-center">DESCRIPCIÓN</th>
+                                    <th class="table-th text-white text-center">NOMBRE COMPLETO</th>
+                                    <th class="table-th text-white text-center">TIPO DE DOCUMENTO</th>
+                                    <th class="table-th text-white text-center">N° DOCUMENTO</th>
+                                    <th class="table-th text-white text-center">TELEFONO</th>
+                                    <th class="table-th text-white text-center">CORREO ELECTRONICO</th>
                                     <th class="table-th text-white text-center">ACCIONES</th>
                                 </tr>
                             </thead>
@@ -76,31 +70,39 @@
                                     <td class="text-center" colspan="8">NO HAY RESULTADOS</td>
                                     </tr>
                                     @else
-                                    @foreach($datos as $datCat)
-                                    <tr>
-                                        <td class="text-center">
-                                            <h6>{{$datCat->category_name}}</h6>
-                                        </td>
-                                        <td class="text-center">
-                                            <h6>{{$datCat->description}}</h6>
-                                        </td>
-
-                                        <td class="text-center">
-                                            @can('Category_Update')
-                                            <a href="javascript:void(0)" wire:click="Edit({{$datCat->id}})"
-                                                class="btn btn-edit" title="Editar Categoría">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            @endcan
-                                            @can('Category_Destroy')
-                                            <a href="javascript:void(0)" onclick="Confirm('{{$datCat->id}}')"
-                                                class="btn btn-danger" title="Eliminar Categoría">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                            @endcan
-                                        </td>
-                                    </tr>
-
+                                    @foreach($datos as $datosCus)
+                                        <tr>
+                                            <td class="text-center">
+                                                <h6>{{$datosCus->first_name." ".$datosCus->last_name}}</h6>
+                                            </td>
+                                            <td class="text-center">
+                                                <h6>{{$datosCus->name_document}}</h6>
+                                            </td>
+                                            <td class="text-center">
+                                                <h6>{{$datosCus->document}}</h6>
+                                            </td>
+                                            <td class="text-center">
+                                                <h6>{{$datosCus->phone}}</h6>
+                                            </td>
+                                            <td class="text-center">
+                                                <h6>{{$datosCus->email}}</h6>
+                                            </td>                                     
+                                            <td class="text-center">
+                                                @can('Product_Update')
+                                                <a href="javascript:void(0)" wire:click="Edit({{$datosCus->id}})"
+                                                    class="btn btn-edit" title="Editar Producto">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                @endcan
+                                                @can('Product_Destroy')
+                                                <a href="javascript:void(0)" onclick="Confirm('{{$datosCus->id}}')"
+                                                    class="btn btn-danger" title="Eliminar Producto">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                                @endcan
+                                            </td>
+                                        </tr>
+                                        
                                     @endforeach
                                     @endif
 
@@ -119,7 +121,7 @@
 
 
         </div>
-        @include('livewire.categories.form')
+        @include('livewire.customers.form')
     </div>
     <style>
     .sales .widget {
@@ -140,7 +142,7 @@
         border-radius: 4px;
         margin-left: 20px;
         margin-top: 5px;
-        padding: 12px;
+        padding:12px;
     }
 
     .widget-chart-one .widget-heading .tabs a:hover {
@@ -152,7 +154,7 @@
         color: #fff;
         border-radius: 4px;
         margin-left: 20px;
-        padding: 11px;
+        padding:11px;
     }
 
     .widget-chart-one .widget-heading {
@@ -230,7 +232,8 @@
 
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    
+	document.addEventListener('DOMContentLoaded', function() {
 
         window.livewire.on('product-added', msg => {
             $('#theModal').modal('hide')
@@ -279,7 +282,7 @@
             $('#theModal').modal('hide')
         });
         window.livewire.on('hidden.bs.modal', msg => {
-            $('.er').css('display', 'none')
+            $('.er').css('display', 'none')			
         });
         $('#theModal').on('hidden.bs.modal', function(e) {
             $('.er').css('display', 'none')
@@ -290,9 +293,9 @@
 
 
 
-    });
+        });
 
-    function Confirm(id) {
+        function Confirm(id) {
 
         swal({
             title: 'CONFIRMAR',
@@ -310,5 +313,5 @@
             }
 
         })
-    }
+        }
     </script>

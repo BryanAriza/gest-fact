@@ -31,7 +31,7 @@ class SearchController extends Component
         'scan-code'  =>  'ScanCode'
     ];
 
-    public function ScanCode($barcode)
+    public function ScanCode($id)
     {
         // obtener el nombre de la ruta
         $routeName = Str::afterLast($this->currentPath, '/');
@@ -40,7 +40,7 @@ class SearchController extends Component
         if ($routeName != 'pos') {
 
             // agregar el producto al carrito
-            $this->ScanearCode($barcode);
+            $this->ScanearCode($id);
 
             // redireccionar a la ruta de ventas
             redirect()->to('/pos');

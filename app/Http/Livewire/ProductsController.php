@@ -204,9 +204,17 @@ class ProductsController extends Component
     //ELIMINAR PRODUCTO
 	public function Destroy(Product $product)
 	{
-		$product->delete();
+		 // Verificar si el producto está asociado a alguna venta
+        $ventasAsociadas = $product->sales()->count();
 
-		$this->resetUI();
-		$this->emit('product-deleted', 'Producto Eliminado');
+        if ($ventasAsociadas > 0) {
+            // Si hay ventas asociadas, no permitir la eliminación
+            $this->emit('product-not-deleted', 'No puedes eliminar este producto. Está asociado a ventas.');
+        } else {
+            // Si no hay ventas asociadas, proceder con la eliminación
+            $product->delete();
+            $this->resetUI();
+            $this->emit('product-deleted', 'Producto Eliminado');
+        }
 	}
 }
