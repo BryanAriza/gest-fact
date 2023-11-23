@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Reporte de Productos</title>
+    <title>Factura de Compra</title>
 
     <!-- ruta física relativa OS -->
     <link rel="stylesheet" href="{{ public_path('css/custom_pdf.css') }}">
@@ -20,7 +20,7 @@
         <table cellpadding="0" cellspacing="0" width="100%">
             <tr>
                 <td colspan="2" class="text-right">
-                    <span style="font-size: 12px"><strong>Fecha de Consulta:
+                    <span style="font-size: 12px"><strong>Fecha de Compra:
                             {{ \Carbon\Carbon::now()->format('d-M-Y')}}</strong></span>
                     <br>
                     <br>
@@ -33,7 +33,7 @@
 
                 <td width="70%" class="text-center text-company" style="vertical-align: top; padding-top: 10px">
                     <br>
-                    <span style="font-size: 25px; font-weight: bold;">REGISTRO DE PRODUCTOS</span>
+                    <span style="font-size: 25px; font-weight: bold;">FACTURA DE COMPRA</span>
 
                 </td>
             </tr>
@@ -43,37 +43,44 @@
     <!-- Agregar la marca de agua -->
     <img src="{{ public_path('assets/img/logo-fast.png') }}" alt="" class="watermark">
 
+    @foreach($dataHeader as $dataHea)
     <section style="margin-top: -110px">
         <section style="margin-top: -110px">
+            <section style="margin-top: -50px">
+                <h4>
+                    COMPRA REALIZADA POR:&nbsp;{{$dataHea->name_customer .' '.$dataHea->last_customer}}<br>
+                    IDENTIFICACIÓN:&nbsp;{{$dataHea->name_document .' - '.$dataHea->docu}}<br>
+                    FACTURADOR:&nbsp;{{$dataHea->first_name .' '.$dataHea->last_name}}
+
+                </h4>
+            </section>
+        </section>
+        <section style="margin-top: -5x">
             <table cellpadding="0" cellspacing="0" class="table-items" width="100%">
                 <thead>
                     <tr>
-                        <th width="10%">ID PRODUCTO</th>
-                        <th width="12%">NOMBRE PRODUCTO</th>
-                        <th width="12%">DESCRIPCIÓN</th>
-                        <th width="12%">CATEGORIA PRODUCTO</th>
-                        <th width="12%">PRECIO UNITARIO</th>
-                        <th width="12%">EXISTENCIAS PRODUCTO</th>
-						<th width="12%">PRECIO TOTAL EN PRODUCTOS</th>
-                        <th width="16%">IVA PRODUCTO</th>
-                        <th width="12%">FECHA CREACIÓN</th>
+                        <th width="40%">NOMBRE PRODUCTO</th>
+                        <th width="40%">CANTIDAD COMPRADOS</th>
+                        <th width="40%">PRECIO UNITARIO</th>
+                        <th width="40%">PRECIO MAS CANTIDAD</th>
+
 
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($data as $item)
+
+                    @foreach($dataDetail as $dataDet)
+                    @if($dataDet->id_sales_header == $dataHea->id)
                     <tr>
-                        <td class="text-center">{{$item->id}}</td>
-                        <td class="text-center">{{$item->product_name}}</td>
-                        <td class="text-center">{{$item->description}}</td>
-                        <td class="text-center">{{$item->category_name}}</td>
-                        <td class="text-center">${{number_format($item->price)}}</td>
-                        <td class="text-center">{{$item->stock}}</td>
-						<td class="text-center">${{number_format($item->total)}}</td>
-                        <td class="text-center">{{$item->iva}}%</td>
-                        <td class="text-center">{{$item->created_at}}</td>
+                        <td class="text-center">{{$dataDet->product_name}}</td>
+                        <td class="text-center">{{$dataDet->cant_product}}</td>
+                        <td class="text-center">${{number_format($dataDet->unit_price)}}</td>
+                        <td class="text-center">${{number_format($dataDet->unit_price * $dataDet->cant_product)}}</td>
+
                     </tr>
+                    @endif
                     @endforeach
+
                 </tbody>
                 <tfoot>
                     <tr>
@@ -81,14 +88,12 @@
                             <span><b>TOTALES</b></span>
                         </td>
                         <td class="text-center">
-                            {{$data->count('id')}}
+                            {{$dataDetail->sum('cant_product')}}
                         </td>
-                        <td colspan="3"></td>
-						<td class="text-center">
-							{{$data->sum('stock')}}
+                        <td class="text-center">
                         </td>
-						<td class="text-center">
-							${{number_format($data->sum('total'))}}
+                        <td class="text-center">
+                            ${{number_format($dataHea->total_sale)}}
                         </td>
                     </tr>
                 </tfoot>
@@ -97,6 +102,7 @@
 
 
         <section class="footer">
+            @endforeach
 
             <table cellpadding="0" cellspacing="0" class="table-items" width="100%">
                 <tr>

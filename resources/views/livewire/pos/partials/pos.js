@@ -12,10 +12,22 @@ console.log('cargó script pos')
             })
 		})
 		window.livewire.on('scan-notfound', Msg => {			
-			noty(Msg, 2)
+			swal({
+                title: 'Se ha presentado un error!',
+                text: Msg,
+                type: 'error',
+                showConfirmButton: false,
+                timer: 1600
+            })
 		})
 		window.livewire.on('no-stock', Msg => {			
-			noty(Msg, 2)
+			swal({
+                title: 'Se ha presentado un error!',
+                text: Msg,
+                type: 'error',
+                showConfirmButton: false,
+                timer: 1600
+            })
 		})
 		window.livewire.on('sale-ok', Msg => {			
 			//noty(Msg)

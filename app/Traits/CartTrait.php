@@ -134,20 +134,23 @@ public function removeItem($productId)
 public function decreaseQuantity($productId)
 {
         $item = Cart::get($productId);
+        //dd($item);
         Cart::remove($productId);
         
         // // si el producto no tiene imagen, mostramos una default
-        // $img = (count($item->attributes) > 0 ? $item->attributes[0] : Product::find($productId));
+        //$img = (count($item->attributes) > 0 ? $item->attributes[0] : Product::find($productId));
         
         $newQty = ($item->quantity) - 1;
-
+        //dd($newQty);
         if($newQty > 0)                 
-                Cart::add($item->id, $item->product_name, $item->price, $newQty);                
+                $data = Cart::add($item->id, $item->name, $item->price, $newQty);  
+                //dd($data);              
 
 
         $this->total = Cart::getTotal();
         $this->itemsQuantity = Cart::getTotalQuantity();
         $this->emit('scan-ok', 'Cantidad actualizada');
+        
 
 
 }

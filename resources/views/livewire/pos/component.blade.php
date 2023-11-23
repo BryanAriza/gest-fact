@@ -40,6 +40,7 @@
 	} catch (e) {
 		console.log('Error de lectura: ', e)
 	}
+
 </script>
 
 

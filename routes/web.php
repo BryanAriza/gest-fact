@@ -1,23 +1,17 @@
 <?php
 
 use App\Http\Livewire\Dash;
-use App\Http\Livewire\Select2;
-use App\Http\Livewire\Component1;
 use App\Http\Livewire\PosController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\RolesController;
 use App\Http\Livewire\UsersController;
 use App\Http\Livewire\AsignarController;
-use App\Http\Livewire\CashoutController;
-use App\Http\Livewire\ReportsController;
-use App\Http\Livewire\CitasController;
 use App\Http\Livewire\PermisosController;
 use App\Http\Livewire\CustomerController;
 use App\Http\Livewire\CategoriesController;
 use App\Http\Livewire\SalesController;
 use App\Http\Controllers\ExportController;
 use App\Http\Livewire\ProductsController;
-use App\Http\Controllers\ImportarExcelController;
 use App\Http\Livewire\ProfileController;
 use App\Http\Livewire\PasswordController;
 
@@ -36,6 +30,8 @@ Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
 
+    Route::get('/home', Dash::class);
+    Route::get('/dashboard', Dash::class);
 
     Route::group(['middleware' => ['role_or_permission:ADMIN|Config_Index|User_Index|Role_Index|Permission_Index|Asignar_Index']], function () {
       
@@ -62,7 +58,7 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['middleware' => ['role_or_permission:ADMIN|FACTURADOR|Sales_Index']], function () {
 
         Route::get('/productosVenta', SalesController::class);
-        Route::get('/home', SalesController::class);
+        //Route::get('/home', SalesController::class);
         Route::get('/ventaPos', PosController::class);
     
     });

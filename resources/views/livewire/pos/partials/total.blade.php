@@ -31,8 +31,8 @@
                                             style="background: #6a5330 !important; color:white">Efectivo
                                         </span>
                                     </div>
-                                    <input type="number" id="cash" wire:model="efectivo" wire:keydown.enter="saveSale"
-                                        class="form-control text-center" value="{{$efectivo}}">
+                                    <input type="number" id="cash" wire:model="efectivo" wire:change="ACash"
+                                        wire:keydown.enter="saveSale" class="form-control text-center">
                                     <div class="input-group-append">
                                         <span wire:click="$set('efectivo', 0)" class="input-group-text"
                                             style="background: #6a5330; color:white">
@@ -56,7 +56,17 @@
                                         @if($efectivo>= $total && $total > 0)
                                         <button wire:click.prevent="saveSale"
                                             class="btn btn-success btn-md btn-block">FACTURAR</button>
-										@endif
+                                        @endif
+                                    </div>
+									<br>
+									<br>
+                                    <div class="alert alert-info text-center col-sm-12 col-md-12 col-lg-12" role="alert" wire:loading
+                                        wire:target="saveSale">
+                                        <div class="spinner-border spinner-border-sm" role="status">
+                                            <span class="sr-only">Cargando...</span>
+                                        </div>
+                                        Generando Factura...
+                                        <!-- Muestra un mensaje de carga mientras se está realizando la consulta -->
                                     </div>
 
 
@@ -94,5 +104,10 @@
 
         });
     }
-
+    document.addEventListener('livewire:load', function() {
+        Livewire.on('pdf-generated', function(data) {
+            // Abrir el PDF en una nueva ventana
+            window.open(data, '_blank');
+        });
+    });
     </script>

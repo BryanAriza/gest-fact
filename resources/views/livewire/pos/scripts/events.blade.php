@@ -18,7 +18,13 @@ document.addEventListener('DOMContentLoaded', function() {
     })
 
     window.livewire.on('no-stock', Msg => {
-        noty(Msg, 2)
+        swal({
+            title: 'Se ha presentado un error!',
+            text: Msg,
+            type: 'error',
+            showConfirmButton: false,
+            timer: 1600
+        })
     })
 
     window.livewire.on('sale-ok', Msg => {

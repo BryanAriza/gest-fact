@@ -17,7 +17,8 @@ class PosController extends Component
 	use Utils;
 	use CartTrait;
 
-	public $total, $itemsQuantity, $efectivo, $change, $documentNum,$first_name,$document,$last_name,$email,$phone,$idCutomer,$id_sale_header;
+	public $total, $itemsQuantity, $efectivo, $change, $documentNum,$first_name,$document,$last_name,$email,$phone,$idCutomer,$id_sale_header,$pdfPath;
+    public $loading = false;
 
     protected $rules = [
         'documentNum' => 'required',
@@ -81,9 +82,8 @@ class PosController extends Component
     }
 
 	// agregar efectivo 
-	public function ACash($value)
+	public function ACash()
 	{
-		$this->efectivo += ($value == 0 ? $this->total : $value);
 		$this->change = ($this->efectivo - $this->total);
 	}
 
@@ -94,9 +94,16 @@ class PosController extends Component
 		'clearCart'  => 'clearCart',
 		'saveSale'   => 'saveSale',
 		'refresh' => '$refresh',
-		'print-last' => 'printLast'
+		'print-last' => 'printLast',
+        'pdf-generated' => 'setPdfPath'
 	];
+    
 
+    public function setPdfPath($data)
+    {
+
+        $this->pdfPath = $data;
+    }
 
 	// buscar y agregar producto por escaner y/o manual
 	public function ScanCode($barcode, $cant = 1)
@@ -141,6 +148,8 @@ class PosController extends Component
 	// guardar venta
 	public function saveSale()
 	{
+        $this->loading = true;
+
         $this->validate($this->rules, $this->messages);
 
 		if ($this->total <= 0) {
@@ -203,10 +212,8 @@ class PosController extends Component
             $this->first_name='';
 			
             $ticket = $this->buildTicket($sale);
-            dd($ticket);
-			$d = $this->Encrypt($ticket);
-            dd($d);
-			$this->emit('print-ticket', $d);
+			//$d = $this->Encrypt($ticket);
+			//$this->emit('print-ticket', $d);
 			//$this->emit('print-ticket', $sale->id);
             
 
@@ -232,46 +239,27 @@ class PosController extends Component
 			->select('sales_details.*', 'products.product_name')
 			->where('sales_details.id_sales_header','=', $id_venta)
 			->get();
-		// opcion 1
-		/*
-		$products ='';
-		$info = "folio: $sale->id|";
-		$info .= "date: $sale->created_at|";		
-		$info .= "cashier: {$sale->user->name}|";
-		$info .= "total: $sale->total|";
-		$info .= "items: $sale->items|";
-		$info .= "cash: $sale->cash|";
-		$info .= "change: $sale->change|";
-		foreach ($details as $product) {
-			$products .= $product->name .'}';
-			$products .= $product->price .'}';
-			$products .= $product->quantity .'}#';
-		}
-
-		$info .=$products;
-		return $info;
-		*/
+		
         $detailsArray = json_decode($details, true);
         $idSalesHeader = $detailsArray[0]['id_sales_header'];
-        //dd($idSalesHeader);
-		// opcion 2
-		// $sale->id_user = $sale->user->first_name;
-		// $r = $sale->toJson() . '|' . $details->toJson();
+     
         $saleHeader = SalesHeader::join('users', 'users.id', 'sales_headers.id_user')
                                 ->join('customers', 'customers.id', 'sales_headers.id_customer')
-                                ->select('users.first_name','users.last_name', 'customers.*','sales_headers.*')
+                                ->join('type_documents','type_documents.id', 'customers.id_type')
+                                ->select('users.first_name','users.last_name', 'customers.first_name as name_customer', 'customers.last_name as last_customer',
+                                'type_documents.name_document','customers.document as docu','sales_headers.*')
                                 ->where('sales_headers.id_user', $sale->id_user)
                                 ->where('sales_headers.id', $idSalesHeader)
                                 ->get();
         //dd($saleHeader);
         // $saleUserName = $saleHeader->id_user; // Accede al nombre del usuario a través de la función de acceso
         
-        $r = $saleHeader->toJson() . '|' . $details->toJson();
+        $r = $saleHeader . $details;
+
         // Llamada a la función que crea el PDF
-        $this->createPdf($r);
-		//$array[] = json_decode($sale, true);
-		//$array[] = json_decode($details, true);
-		//$result = json_encode($array, JSON_PRETTY_PRINT);
+        $this->createPdf($saleHeader,$details);
+        
+
 
 		//dd($r);
 		return $r;
@@ -286,12 +274,27 @@ class PosController extends Component
 			$this->emit('print-last-id', $lastSale->id);
 	}
 
-    public function createPdf($data)
+    public function createPdf($dataHeader, $dataDetail)
     {
-        $data = json_decode($data, true);
-        dd($data);
-        // Ejemplo (puedes ajustar según tu lógica)
-        $pdf = \PDF::loadView('pdf.facturaPos', ['data' => $data]);
-        return $pdf->download('factura.pdf');
+       
+        foreach ($dataHeader as $header) {
+            $docu = $header->docu;
+            $idHea = $header->id;
+        }
+
+        $pdf = \PDF::loadView('pdf.facturaPos', ['dataHeader' => $dataHeader,'dataDetail' => $dataDetail]);
+        
+        // Guardar el PDF en almacenamiento (opcional)
+        $pdfPath = public_path('facturas') . '/factura_' .$docu.'_'. date('Y-m-d') .'_'.$idHea. '.pdf';
+        $pdf->save($pdfPath);
+
+        $pdfP ='facturas/factura_' .$docu.'_'. date('Y-m-d') .'_'.$idHea. '.pdf';
+
+        $this->emit('pdf-generated', $pdfP);
+
+        $this->loading = false;
+
+        // Redirigir a la ruta con el PDF como parámetro
+        return response()->json(['pdfPath' => $pdfPath]);
     }
 }
