@@ -13,8 +13,13 @@ jobs:
       - run:
           name: run tests
           command: ./vendor/bin/phpunit
+      - run:
+          command: |
+            mkdir -p ~/phpunit
+            phpunit --log-junit ~/phpunit/junit.xml tests
+          when: always
       - store_test_results:
-          path: test-results
+          path: ~/phpunit
   deploy:
     docker:
       - image: cimg/base:stable
