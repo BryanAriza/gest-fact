@@ -14,9 +14,7 @@ jobs:
           name: run tests
           command: ./vendor/bin/phpunit
       - run:
-          command: |
-            mkdir -p ~/phpunit
-            phpunit --log-junit ~/phpunit/junit.xml tests
+          command: vendor/bin/phpunit --testdox-html tests/reports/test-report.html
           when: always
       - store_test_results:
           path: ~/phpunit
