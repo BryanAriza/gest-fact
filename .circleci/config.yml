@@ -12,6 +12,9 @@ jobs:
       - checkout
       - php/install-packages
       - run:
+          name: Install Composer Dependencies
+          command: composer install --prefer-dist --no-interaction --optimize-autoloader
+      - run:
           name: run tests
           command: ./vendor/bin/phpunit
   deploy:
