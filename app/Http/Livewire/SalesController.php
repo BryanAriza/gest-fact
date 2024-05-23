@@ -18,6 +18,13 @@ class SalesController extends Component
 
 	public function ScanCode($id)
 	{
+		$product = Product::find($id);
+
+		if (!$product) {
+			$this->emit('global-error-msg', "Producto no encontrado");
+			return;
+		}
+
 		$this->ScanearCode($id);
 		$this->emit('global-msg', "SE AGREGÓ EL PRODUCTO AL CARRITO");
 	}

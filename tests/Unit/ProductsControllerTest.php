@@ -13,6 +13,8 @@ class ProductsControllerTest extends TestCase
     /** @test */
     public function it_cannot_create_a_product_with_non_existing_category()
     {
+        $this->withoutExceptionHandling();
+        
         try {
             Livewire::test(ProductsController::class)
                 ->set('product_name', 'Test Product')
@@ -48,4 +50,6 @@ class ProductsControllerTest extends TestCase
             'id' => $product->id,
         ]);
     }
+
+    
 }

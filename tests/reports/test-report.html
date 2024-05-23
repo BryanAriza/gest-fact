@@ -57,20 +57,22 @@
             <li class="success">It can update a category</li>
             <li class="success">It can delete a category</li>
         </ul>
-        <h2>Customer Controller (Tests\Feature\CustomerController)</h2>
+        <h2>Dash Controller (Tests\Unit\DashController)</h2>
         <ul>
-            <li class="defect">It can create a customer</li>
-            <li class="defect">It can update a customer</li>
-            <li class="defect">It can delete a customer without pending sales</li>
+            <li class="success">It fails to select top 5 best products</li>
         </ul>
-        <h2>Pos Controller</h2>
+        <h2>Permisos Controller</h2>
         <ul>
-            <li class="defect">It can complete a sale</li>
+            <li class="success">It cannot delete a permission associated with roles</li>
         </ul>
         <h2>Products Controller</h2>
         <ul>
             <li class="success">It cannot create a product with non existing category</li>
-            <li class="defect">It can delete a product</li>
+            <li class="success">It can delete a product</li>
+        </ul>
+        <h2>Sales Controller</h2>
+        <ul>
+            <li class="success">It cannot scan a non existing product</li>
         </ul>
         <h2>Route Permissions (Tests\Feature\RoutePermissions)</h2>
         <ul>

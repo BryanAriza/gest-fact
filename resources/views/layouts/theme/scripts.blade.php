@@ -39,7 +39,17 @@ document.addEventListener('DOMContentLoaded', function() {
             timer: 1600
         })
     });
+
+    window.livewire.on('global-error-msg', msg => {
+        swal({
+            title: 'Error!',
+            text: msg,
+            type: 'error',
+            showConfirmButton: true
+        })
+    });
 })
+
 </script>
 
 

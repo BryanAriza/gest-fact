@@ -4,10 +4,12 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Traits\HasRoles;
 use App\Models\User;
 
 class UserTableSeeder extends Seeder
 {
+    use HasRoles;
     /**
      * Run the database seeds.
      *
