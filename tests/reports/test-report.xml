@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests>
+  <test className="Tests\Unit\ExampleTest" methodName="testBasicTest" prettifiedClassName="Example (Tests\Unit\Example)" prettifiedMethodName="Basic test" status="0" time="0.0050478" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+  <test className="Tests\Feature\ExampleTest" methodName="testBasicTest" prettifiedClassName="Example (Tests\Feature\Example)" prettifiedMethodName="Basic test" status="0" time="0.608575" size="-1" groups="default">
+    <group name="default"/>
+  </test>
+</tests>
