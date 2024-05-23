@@ -13,6 +13,8 @@ jobs:
       - run:
           name: run tests
           command: ./vendor/bin/phpunit
+      - store_test_results:
+          path: test-results
   deploy:
     docker:
       - image: cimg/base:stable
