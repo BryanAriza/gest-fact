@@ -70,7 +70,7 @@
                                                     class="badge {{ $r->status == 'ACTIVE' ? 'badge-success' : 'badge-danger' }} text-uppercase">{{$r->status}}</span>
                                             </td>
                                             <td class="text-center text-uppercase">
-                                                <h6>{{$r->profile}}</h6>
+                                                <h6>{{$r->rol}}</h6>
                                                 <small><b>Roles:</b>{{implode(',',$r->getRoleNames()->toArray())}}</small>
                                             </td>
 
@@ -228,14 +228,33 @@
     document.addEventListener('DOMContentLoaded', function() {
         window.livewire.on('user-added', Msg => {
             $('#theModal').modal('hide')
-            noty(Msg)
+            swal({
+                title: 'Registro Creado!',
+                text: Msg,
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1600
+            })
         })
         window.livewire.on('user-updated', Msg => {
             $('#theModal').modal('hide')
-            noty(Msg)
+            swal({
+                title: 'Registro Actualizado!',
+                text: Msg,
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1600
+            })
         })
         window.livewire.on('user-deleted', Msg => {
-            noty(Msg)
+            //noty(Msg)
+            swal({
+                title: 'Registro Eliminado!',
+                text: Msg,
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1600
+            })
         })
         window.livewire.on('hide-modal', Msg => {
             $('#theModal').modal('hide')

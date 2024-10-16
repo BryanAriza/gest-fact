@@ -130,9 +130,17 @@ class CategoriesController extends Component
     //ELIMINAR PRODUCTO
 	public function Destroy(Category $category)
 	{
-		$category->delete();
+		// Verificar si la categoría está asociada a algún producto
+		$productosAsociados = $category->products()->count();
 
-		$this->resetUI();
-		$this->emit('product-deleted', 'Producto Eliminado');
+		if ($productosAsociados > 0) {
+			// Si hay productos asociados, no permitir la eliminación
+			$this->emit('product-not-deleted', 'No puedes eliminar esta categoría. Está asociada a productos.');
+		} else {
+			// Si no hay productos asociados, proceder con la eliminación
+			$category->delete();
+			$this->resetUI();
+			$this->emit('product-deleted', 'Categoría Eliminada');
+		}
 	}
 }

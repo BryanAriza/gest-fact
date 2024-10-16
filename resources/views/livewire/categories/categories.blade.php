@@ -13,21 +13,24 @@
                     <div class="row">
 
                         @can('Category_Search')
-                                @include('common.searchboxuser')
+                        @include('common.searchboxuser')
                         @endcan
-        
+
                         <div class="col-sm-14 col-md-3 py-4">
-                        @if (count($datos) != 0)
+                            @if (count($datos) != 0)
                             <a class="btn btn-md btn-success font-weight-bold mt-2 text-center"
-                                href="{{ url('reportCategory/excel' . '/' . $search) }}" target="_blank" title="Exportar XLS de productos">
+                                href="{{ url('reportCategory/excel' . '/' . $search) }}" target="_blank"
+                                title="Exportar XLS de productos">
                                 <i class="fas fa-file-excel mr-2 ml-1 mt-1"></i>
                                 Excel
                             </a>
-                            <a class="btn btn-md btn-danger font-weight-bold mt-2" href="{{ url('reportCategory/pdf' . '/' . $search) }}" target="_blank" title="Exportar PDF de productos">
+                            <a class="btn btn-md btn-danger font-weight-bold mt-2"
+                                href="{{ url('reportCategory/pdf' . '/' . $search) }}" target="_blank"
+                                title="Exportar PDF de productos">
                                 <i class="fas fa-file-pdf mr-2 ml-1 mt-1"></i>
-                                PDF 
+                                PDF
                             </a>
-                        @else
+                            @else
                             <a class="btn btn-md btn-success font-weight-bold mt-2" disabled>
                                 <i class="fas fa-file-excel mr-2 ml-1 mt-1"></i>
                                 Excel
@@ -36,10 +39,10 @@
                                 <i class="fas fa-file-pdf mr-2 ml-1 mt-1"></i>
                                 PDF
                             </a>
-                        @endif
+                            @endif
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3">
-                        
+
                         </div>
 
                         @can('Category_Create')
@@ -74,30 +77,30 @@
                                     </tr>
                                     @else
                                     @foreach($datos as $datCat)
-                                        <tr>
-                                            <td class="text-center">
-                                                <h6>{{$datCat->category_name}}</h6>
-                                            </td>
-                                            <td class="text-center">
-                                                <h6>{{$datCat->description}}</h6>
-                                            </td>
-                                            
-                                            <td class="text-center">
-                                                @can('Category_Update')
-                                                <a href="javascript:void(0)" wire:click="Edit({{$datCat->id}})"
-                                                    class="btn btn-edit" title="Editar Categoría">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                @endcan
-                                                @can('Category_Destroy')
-                                                <a href="javascript:void(0)" onclick="Confirm('{{$datCat->id}}')"
-                                                    class="btn btn-danger" title="Eliminar Categoría">
-                                                    <i class="fas fa-trash"></i>
-                                                </a>
-                                                @endcan
-                                            </td>
-                                        </tr>
-                                        
+                                    <tr>
+                                        <td class="text-center">
+                                            <h6>{{$datCat->category_name}}</h6>
+                                        </td>
+                                        <td class="text-center">
+                                            <h6>{{$datCat->description}}</h6>
+                                        </td>
+
+                                        <td class="text-center">
+                                            @can('Category_Update')
+                                            <a href="javascript:void(0)" wire:click="Edit({{$datCat->id}})"
+                                                class="btn btn-edit" title="Editar Categoría">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            @endcan
+                                            @can('Category_Destroy')
+                                            <a href="javascript:void(0)" onclick="Confirm('{{$datCat->id}}')"
+                                                class="btn btn-danger" title="Eliminar Categoría">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                            @endcan
+                                        </td>
+                                    </tr>
+
                                     @endforeach
                                     @endif
 
@@ -137,7 +140,7 @@
         border-radius: 4px;
         margin-left: 20px;
         margin-top: 5px;
-        padding:12px;
+        padding: 12px;
     }
 
     .widget-chart-one .widget-heading .tabs a:hover {
@@ -149,7 +152,7 @@
         color: #fff;
         border-radius: 4px;
         margin-left: 20px;
-        padding:11px;
+        padding: 11px;
     }
 
     .widget-chart-one .widget-heading {
@@ -227,17 +230,47 @@
 
 
     <script>
-    
-	document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
 
         window.livewire.on('product-added', msg => {
             $('#theModal').modal('hide')
+            swal({
+                title: 'Registro Creado!',
+                text: msg,
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1600
+            })
         });
         window.livewire.on('product-updated', msg => {
             $('#theModal').modal('hide')
+            swal({
+                title: 'Registro Actualizado!',
+                text: msg,
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1600
+            })
         });
         window.livewire.on('product-deleted', msg => {
             // noty
+            swal({
+                title: 'Registro Eliminado!',
+                text: msg,
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1600
+            })
+        });
+        window.livewire.on('product-not-deleted', msg => {
+            // noty
+            swal({
+                title: 'Se ha Producido un Error!',
+                text: msg,
+                type: 'error',
+                showConfirmButton: false,
+                timer: 1900
+            })
         });
         window.livewire.on('modal-show', msg => {
             $('#theModal').modal('show')
@@ -246,7 +279,7 @@
             $('#theModal').modal('hide')
         });
         window.livewire.on('hidden.bs.modal', msg => {
-            $('.er').css('display', 'none')			
+            $('.er').css('display', 'none')
         });
         $('#theModal').on('hidden.bs.modal', function(e) {
             $('.er').css('display', 'none')
@@ -257,9 +290,9 @@
 
 
 
-        });
+    });
 
-        function Confirm(id) {
+    function Confirm(id) {
 
         swal({
             title: 'CONFIRMAR',
@@ -277,5 +310,5 @@
             }
 
         })
-        }
+    }
     </script>

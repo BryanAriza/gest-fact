@@ -892,16 +892,16 @@ select.form-control.form-custom {
 }
   .btn-dark:hover, .btn-dark:focus {
     color: #fff !important;
-    background-color: #d5c766;
+    background-color: #978327;
     box-shadow: none;
-    border-color: #d5c766; }
+    border-color: #978327; }
   .btn-dark:active, .btn-dark.active {
-    background-color: #d5c766;
-    border-top: 1px solid #d5c766; }
+    background-color: #978327;
+    border-top: 1px solid #978327; }
   .btn-dark:not(:disabled):not(.disabled).active, .btn-dark:not(:disabled):not(.disabled):active {
     color: #fff !important;
-    background-color: #d5c766;
-    border-color: #d5c766; }
+    background-color: #978327;
+    border-color: #978327; }
 
 .show > .btn-dark.dropdown-toggle {
   color: #fff !important;

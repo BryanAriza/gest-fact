@@ -253,12 +253,43 @@
 
         window.livewire.on('product-added', msg => {
             $('#theModal').modal('hide')
+            swal({
+                title: 'Registro Creado!',
+                text: msg,
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1600
+            })
         });
         window.livewire.on('product-updated', msg => {
             $('#theModal').modal('hide')
+            swal({
+                title: 'Registro Actualizado!',
+                text: msg,
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1600
+            })
         });
         window.livewire.on('product-deleted', msg => {
             // noty
+            swal({
+                title: 'Registro Eliminado!',
+                text: msg,
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1600
+            })
+        });
+        window.livewire.on('product-not-deleted', msg => {
+            // noty
+            swal({
+                title: 'Se ha Producido un Error!',
+                text: msg,
+                type: 'error',
+                showConfirmButton: false,
+                timer: 1900
+            })
         });
         window.livewire.on('modal-show', msg => {
             $('#theModal').modal('show')

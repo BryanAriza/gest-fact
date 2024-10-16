@@ -18,6 +18,7 @@
                     dataLabels: {
                         position: 'top',
                     },
+                    
                 }
             },
             dataLabels: {
@@ -31,7 +32,7 @@
                     colors: ["#304758"]
                 }
             },
-
+            colors: ["#FF5733", "#FFC300", "#33FF57", "#33B5FF", "#9A33FF", "#FF3380", "#5E5E5E", "#A0A0A0", "#E6E6E6", "#5C5C5C", "#D8E3F0", "#BED1E6"],
             xaxis: {
                 categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
                 position: 'top',
@@ -110,6 +111,7 @@
                 @this.top5Data[3]['product'],
                 @this.top5Data[4]['product']
             ],
+            colors: ["#FF5733", "#FFC300", "#33FF57", "#33B5FF", "#9A33FF"],
             responsive: [{
                 breakpoint: 480,
                 options: {
@@ -150,7 +152,7 @@
                 offsetY: -5,
                 style: {
                     fontSize: '12px',
-                    colors: ["#304758"]
+                    colors: ["#119b27"]
                 }
             },
             series: [{

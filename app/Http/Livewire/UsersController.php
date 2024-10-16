@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Livewire;
-use App\Models\Sale;
+use App\Models\TypeDocument;
 use App\Models\User;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -15,9 +15,9 @@ class UsersController extends Component
     use WithPagination;
     use WithFileUploads;
 
-    public $first_name,$last_name,$rol,$id_type,$document,$phone,$email,$password,$status,$image,$selected_id;
+    public $first_name,$last_name,$rol,$id_type,$document,$phone,$email,$password,$status,$image,$selected_id,$selectTypeDoc;
     public $pageTitle, $componentName, $search;
-    private $pagination = 3;
+    private $pagination = 10;
 
     public function paginationView()
     {
@@ -43,7 +43,8 @@ class UsersController extends Component
 
        return view('livewire.users.component',[
         'data' => $data,
-        'roles' => Role::orderBy('name','asc')->get()
+        'roles' => Role::orderBy('name','asc')->get(),
+        'typeDoc' => TypeDocument::orderBy('id','asc')->get()
     ])
        ->extends('layouts.theme.app')
        ->section('content');
@@ -59,6 +60,7 @@ class UsersController extends Component
     $this->phone='';
     $this->email ='';
     $this->password ='';
+    $this->selectTypeDoc =0;
     $this->status ='Elegir';
     $this->selected_id =0;
     $this->resetValidation();
@@ -66,107 +68,40 @@ class UsersController extends Component
 }
 
 
-public function edit(User $user)
-{
-    $this->selected_id = $user->id;
-    $this->first_name = $user->first_name;
-    $this->last_name = $user->last_name;
-    $this->rol = $this->rol;
-    $this->id_type = $this->id_type;
-    $this->document = $user->document;
-    $this->phone = $user->phone;
-    $this->email = $user->email;
-    $this->status = $user->status;
-    $this->password ='';
+    public function edit(User $user)
+    {
+        $this->selected_id = $user->id;
+        $this->first_name = $user->first_name;
+        $this->last_name = $user->last_name;
+        $this->rol = $user->rol;
+        $this->selectTypeDoc = $user->id_type;
+        $this->document = $user->document;
+        $this->phone = $user->phone;
+        $this->email = $user->email;
+        $this->status = $user->status;
+        $this->password ='';
 
-    $this->emit('show-modal','open!');
- 
-}
-
-
-protected $listeners =[
-    'deleteRow' => 'destroy',
-    'resetUI' => 'resetUI'
-
-];
+        $this->emit('show-modal','open!');
+    
+    }
 
 
-public function Store()
-{
- $rules =[
-    'first_name' => 'required|min:4',
-    'last_name' => 'required|min:4',
-    'rol' => 'required|not_in:Elegir',
-    'id_type' => 'required|not_in:Elegir',
-    'document' => 'required|min:5',
-    'phone' => 'required|min:11',
-    'email' => 'required|unique:users|email',
-    'status' => 'required|not_in:Elegir',
-    'password' => 'required|min:3'
-];
+    protected $listeners =[
+        'deleteRow' => 'destroy',
+        'resetUI' => 'resetUI'
 
-$messages =[
-    'first_name.required' => 'Ingresa el nombre',
-    'first_name.min' => 'El nombre del usuario debe tener al menos 4 caracteres',
-    'last_name.required' => 'Ingresa el apellido',
-    'last_name.min' => 'El apellido del usuario debe tener al menos 4 caracteres',
-    'rol.required' => 'Selecciona el perfil/role del usuario',
-    'rol.not_in' => 'Selecciona un perfil/role distinto a Elegir',
-    'id_type.required' => 'Selecciona el tipo de documento',
-    'id_type.not_in' => 'Selecciona el tipo de documento distinto a Elegir',
-    'document.required' => 'Ingresa la identificación',
-    'document.min' => 'La identificación de usuario debe tener al menos 5 caracteres',
-    'phone.required' => 'Ingresa el télefono',
-    'phone.min' => 'El télefono ingresado debe tener al menos 11 caracteres',
-    'email.required' => 'Ingresa el correo ',
-    'email.email' => 'Ingresa un correo válido',
-    'email.unique' => 'El email ya existe en sistema',
-    'status.required' => 'Selecciona el estatus del usuario',
-    'status.not_in' => 'Selecciona el estatus',
-    'password.required' => 'Ingresa el password',
-    'password.min' => 'El password debe tener al menos 3 caracteres'
-];
+    ];
 
-$this->validate($rules, $messages);
 
-$user = User::create([
-    'first_name' => $this->first_name,
-    'last_name' => $this->last_name,
-    'rol' => $this->rol,
-    'id_type' => $this->id_type,
-    'document' => $this->document,
-    'phone' => $this->phone,
-    'email' => $this->email,
-    'status' => $this->status,
-    'password' => bcrypt($this->password)
-]);
-
-$user->syncRoles($this->rol);
-
-if($this->image) 
-{
-    $customFileName = uniqid() . ' _.' . $this->image->extension();
-    $this->image->storeAs('public/users', $customFileName);
-    $user->image = $customFileName;
-    $user->save();
-}
-
-$this->resetUI();
-$this->emit('user-added','Usuario Registrado');
-
-}
-
-public function Update()
-{
-
+    public function Store()
+    {
     $rules =[
-        'email' => "required|email|unique:users,email,{$this->selected_id}",
         'first_name' => 'required|min:4',
         'last_name' => 'required|min:4',
         'rol' => 'required|not_in:Elegir',
-        'id_type' => 'required|not_in:Elegir',
+        'selectTypeDoc' => 'required|not_in:Elegir',
         'document' => 'required|min:5',
-        'phone' => 'required|min:11',
+        'phone' => 'required|min:10|regex:/^[^.,]+$/',
         'email' => 'required|unique:users|email',
         'status' => 'required|not_in:Elegir',
         'password' => 'required|min:3'
@@ -179,12 +114,13 @@ public function Update()
         'last_name.min' => 'El apellido del usuario debe tener al menos 4 caracteres',
         'rol.required' => 'Selecciona el perfil/role del usuario',
         'rol.not_in' => 'Selecciona un perfil/role distinto a Elegir',
-        'id_type.required' => 'Selecciona el tipo de documento',
-        'id_type.not_in' => 'Selecciona el tipo de documento distinto a Elegir',
+        'selectTypeDoc.required' => 'Selecciona el tipo de documento',
+        'selectTypeDoc.not_in' => 'Selecciona el tipo de documento distinto a Elegir',
         'document.required' => 'Ingresa la identificación',
         'document.min' => 'La identificación de usuario debe tener al menos 5 caracteres',
         'phone.required' => 'Ingresa el télefono',
-        'phone.min' => 'El télefono ingresado debe tener al menos 11 caracteres',
+        'phone.min' => 'El télefono ingresado debe tener al menos 10 caracteres',
+        'phone.regex' => 'El télefono no debe contener caracteres especiales',
         'email.required' => 'Ingresa el correo ',
         'email.email' => 'Ingresa un correo válido',
         'email.unique' => 'El email ya existe en sistema',
@@ -196,59 +132,120 @@ public function Update()
 
     $this->validate($rules, $messages);
 
-    $user = User::find($this->selected_id);
-    $user->update([
+    $user = User::create([
         'first_name' => $this->first_name,
         'last_name' => $this->last_name,
         'rol' => $this->rol,
-        'id_type' => $this->id_type,
+        'id_type' => $this->selectTypeDoc,
         'document' => $this->document,
         'phone' => $this->phone,
         'email' => $this->email,
         'status' => $this->status,
-        'password' => strlen($this->password) > 0 ? bcrypt($this->password) : $user->password
+        'password' => bcrypt($this->password)
     ]);
-    
-    $user->syncRoles($this->rol);
 
+    $user->syncRoles($this->rol);
 
     if($this->image) 
     {
         $customFileName = uniqid() . ' _.' . $this->image->extension();
         $this->image->storeAs('public/users', $customFileName);
-        $imageTemp = $user->image;
-
         $user->image = $customFileName;
         $user->save();
-
-        if($imageTemp !=null) 
-        {
-            if(file_exists('storage/users/' . $imageTemp)) {
-                unlink('storage/users/' . $imageTemp);
-            }
-        }
-
-
     }
 
     $this->resetUI();
-    $this->emit('user-updated','Usuario Actualizado');
+    $this->emit('user-added','Usuario Registrado');
 
-}
+    }
+
+    public function Update()
+    {
+
+        $rules =[
+            'email' => "required|email|unique:users,email,{$this->selected_id}",
+            'first_name' => 'required|min:4',
+            'last_name' => 'required|min:4',
+            'rol' => 'required|not_in:Elegir',
+            'selectTypeDoc' => 'required|not_in:Elegir',
+            'document' => 'required|min:5',
+            'phone' => 'required|min:10',
+            'status' => 'required|not_in:Elegir',
+            'password' => 'required|min:3'
+        ];
+
+        $messages =[
+            'first_name.required' => 'Ingresa el nombre',
+            'first_name.min' => 'El nombre del usuario debe tener al menos 4 caracteres',
+            'last_name.required' => 'Ingresa el apellido',
+            'last_name.min' => 'El apellido del usuario debe tener al menos 4 caracteres',
+            'rol.required' => 'Selecciona el perfil/role del usuario',
+            'rol.not_in' => 'Selecciona un perfil/role distinto a Elegir',
+            'selectTypeDoc.required' => 'Selecciona el tipo de documento',
+            'selectTypeDoc.not_in' => 'Selecciona el tipo de documento distinto a Elegir',
+            'document.required' => 'Ingresa la identificación',
+            'document.min' => 'La identificación de usuario debe tener al menos 5 caracteres',
+            'phone.required' => 'Ingresa el télefono',
+            'phone.min' => 'El télefono ingresado debe tener al menos 10 caracteres',
+            'email.required' => 'Ingresa el correo ',
+            'email.email' => 'Ingresa un correo válido',
+            'email.unique' => 'El email ya existe en sistema',
+            'status.required' => 'Selecciona el estatus del usuario',
+            'status.not_in' => 'Selecciona el estatus',
+            'password.required' => 'Ingresa el password',
+            'password.min' => 'El password debe tener al menos 3 caracteres'
+        ];
+
+        $this->validate($rules, $messages);
+
+        $user = User::find($this->selected_id);
+        $user->update([
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'rol' => $this->rol,
+            'id_type' => $this->selectTypeDoc,
+            'document' => $this->document,
+            'phone' => $this->phone,
+            'email' => $this->email,
+            'status' => $this->status,
+            'password' => strlen($this->password) > 0 ? bcrypt($this->password) : $user->password
+        ]);
+        
+        $user->syncRoles($this->rol);
 
 
-public function destroy(User $user)
-{
- if($user) {
-    
-        $user->delete();
+        if($this->image) 
+        {
+            $customFileName = uniqid() . ' _.' . $this->image->extension();
+            $this->image->storeAs('public/users', $customFileName);
+            $imageTemp = $user->image;
+
+            $user->image = $customFileName;
+            $user->save();
+
+            if($imageTemp !=null) 
+            {
+                if(file_exists('storage/users/' . $imageTemp)) {
+                    unlink('storage/users/' . $imageTemp);
+                }
+            }
+
+
+        }
+
         $this->resetUI();
-        $this->emit('user-deleted','Usuario Eliminado');
+        $this->emit('user-updated','Usuario Actualizado');
+
+    }
+
+
+    public function destroy(User $user)
+    {
+    if($user) {
+        
+            $user->delete();
+            $this->resetUI();
+            $this->emit('user-deleted','Usuario Eliminado');
+        }
     }
 }
-}
-
-
-
-
-
