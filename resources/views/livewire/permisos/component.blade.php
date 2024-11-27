@@ -41,7 +41,7 @@
 
                                         <th class="table-th text-white text-center">ID</th>
                                         <th class="table-th text-white text-center">DESCRIPCIÓN</th>
-                                        <th class="table-th text-white text-center">ACTIONS</th>
+                                        <th class="table-th text-white text-center">ACCIONES</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -203,20 +203,50 @@
 
         window.livewire.on('permiso-added', Msg => {
             $('#theModal').modal('hide')
-            noty(Msg)
+            swal({
+                title: 'Permiso Creado!',
+                text: Msg,
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1600
+            })
         })
         window.livewire.on('permiso-updated', Msg => {
             $('#theModal').modal('hide')
-            noty(Msg)
+            swal({
+                title: 'Permiso Actualizado!',
+                text: Msg,
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1600
+            })
         })
         window.livewire.on('permiso-deleted', Msg => {
-            noty(Msg)
+            swal({
+                title: 'Permiso Eliminado!',
+                text: Msg,
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1600
+            })
         })
         window.livewire.on('permiso-exists', Msg => {
-            noty(Msg)
+            swal({
+                title: 'Permiso ya existe!',
+                text: Msg,
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1600
+            })
         })
         window.livewire.on('permiso-error', Msg => {
-            noty(Msg)
+            swal({
+                title: 'Se ha producido un error. Vuelve a intentarlo!',
+                text: Msg,
+                type: 'error',
+                showConfirmButton: false,
+                timer: 1600
+            })
         })
         window.livewire.on('hide-modal', Msg => {
             $('#theModal').modal('hide')

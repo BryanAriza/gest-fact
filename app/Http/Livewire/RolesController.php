@@ -43,10 +43,10 @@ class RolesController extends Component
 
    return view('livewire.roles.component',[
     'roles' => $roles
-])
-   ->extends('layouts.theme.app')
-   ->section('content');
-}
+    ])
+    ->extends('layouts.theme.app')
+    ->section('content');
+    }
 
 public function CreateRole()
 {

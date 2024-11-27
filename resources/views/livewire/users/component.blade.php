@@ -39,13 +39,14 @@
                             <table class="table table-bordered table-hover table-striped mt-1">
                                 <thead class="text-white" style="background: #23741e">
                                     <tr>
+                                        <th class="table-th text-white text-center">IDENTIFICACIÓN</th>
                                         <th class="table-th text-white text-center">USUARIO</th>
                                         <th class="table-th text-white text-center">TELÉFONO</th>
                                         <th class="table-th text-white text-center">EMAIL</th>
                                         <th class="table-th text-white text-center">ESTATUS</th>
                                         <th class="table-th text-white text-center">PERFIL</th>
-                                        <th class="table-th text-white text-center">IMÁGEN</th>
-                                        <th class="table-th text-white text-center">ACTIONS</th>
+                                        <th class="table-th text-white text-center">IMAGEN</th>
+                                        <th class="table-th text-white text-center">ACCIONES</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -55,6 +56,10 @@
                                         @else
                                         @foreach($data as $r)
                                         <tr>
+                                            <td class="text-center">
+                                                <h6>{{$r->document}}</h6>
+                                            </td>
+
                                             <td class="text-center">
                                                 <h6>{{$r->first_name . ' ' .$r->last_name}}</h6>
                                             </td>
@@ -76,7 +81,7 @@
 
                                             <td class="text-center">
                                                 @if($r->image != null)
-                                                <img class="card-img-top img-fluid"
+                                                <img class="img-thumbnail img-fluid" style="width: 150px; height: auto;"
                                                     src="{{ asset('storage/users/'.$r->image) }}">
                                                 @endif
                                             </td>

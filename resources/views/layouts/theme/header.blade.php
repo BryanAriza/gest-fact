@@ -19,7 +19,7 @@
 
 
         </ul>
-        <img src="{{ asset('assets/img/logo-fast.ico') }}" alt="logo" style="width:5%;text-align: center;">
+        <img src="{{ asset('assets/img/logo-fast.ico') }}" alt="logo" style="width:5%;text-align: center;" onclick="window.location.href='{{ url('dashboard') }}';">
         <h1 style="color:white;">Gest-Fact</h1>
 
 
@@ -38,10 +38,11 @@
                         aria-labelledby="userProfileDropdown">
                         <div class="user-profile-section">
                             <div class="media mx-auto">
-                                <img src="{{ asset('assets/img/avatar.jpg') }}" class="img-fluid mr-2" alt="avatar">
+                                <img src="{{ Auth::user()->image ? asset('storage/users/' . Auth::user()->image) : asset('assets/img/avatar.jpg') }}" 
+                                     class="img-fluid mr-2" alt="avatar">
                                 <div class="media-body">
-                                    <h5>{{Auth()->user()->first_name}}</h5>
-                                    <p>{{auth()->user()->rol}}</p>
+                                    <h5>{{ Auth::user()->first_name }}</h5>
+                                    <p>{{ Auth::user()->rol }}</p>
                                 </div>
                             </div>
                         </div>

@@ -13,12 +13,18 @@ class SalesHeader extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'id_user');
     }
 
     public function getUserNameAttribute()
     {
         return $this->user ? $this->user->first_name : 'Usuario no disponible';
     }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'id_customer');
+    }
+
 
 }

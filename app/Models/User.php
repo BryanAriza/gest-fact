@@ -12,7 +12,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
     use HasRoles;
-
+    protected $table = 'users';
 
     public function sales()
     {

@@ -12,6 +12,7 @@ use App\Models\SalesHeader;
 use App\Traits\Utils;
 use DB;
 
+
 class PosController extends Component
 {
 	use Utils;
