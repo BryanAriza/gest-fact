@@ -14,23 +14,14 @@
 
                                 <div class="form-group mr-5">
                                     <select wire:model="role" class="form-control">
-                                        <option value="Elegir" selected>== Selecciona el Role ==</option>
+                                        <option value="Elegir" selected>== Selecciona el Rol ==</option>
                                         @foreach ($roles as $role)
                                         <option value="{{ $role->id }}">{{ $role->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
-                            <div class="col col-sm-12 col-md-4">
-                                <div class="form-group mr-5">
-                                    <select wire:model="user" class="form-control">
-                                        <option value="Elegir" selected>== Selecciona un usuario ==</option>
-                                        @foreach ($users as $user)
-                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
+                            
 
                             <div class="col col-sm-12 col-md-4">
 
@@ -200,16 +191,40 @@
         <script type="application/javascript">
         document.addEventListener('DOMContentLoaded', function() {
             window.livewire.on('sync-error', Msg => {
-                noty(Msg)
+                swal({
+                title: 'Se ha producido un error. Vuelve a intentarlo!',
+                text: Msg,
+                type: 'error',
+                showConfirmButton: false,
+                timer: 1600
+            })
             })
             window.livewire.on('permi', Msg => {
-                noty(Msg)
+                swal({
+                title: 'Permisos asignados!',
+                text: Msg,
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1600
+            })
             })
             window.livewire.on('syncall', Msg => {
-                noty(Msg)
+                swal({
+                title: 'Sincronización realizada!',
+                text: Msg,
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1600
+            })
             })
             window.livewire.on('removeall', Msg => {
-                noty(Msg)
+                swal({
+                title: 'Permisos revocados',
+                text: Msg,
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1600
+            })
             })
         });
 

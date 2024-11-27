@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Exports\ReportExport;
 use App\Models\CitasMas;
 use App\Models\Product;
+use App\Models\SalesHeader;
 use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -333,5 +334,95 @@ class ExportController extends Controller
 
     }
 
+    public function reportSales($search = null, $startDate = null, $endDate = null)
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $columns = ['NOMBRE DEL CLIENTE', 'TIPO DE DOCUMENTO', 'NUMERO DE DOCUMENTO', 'TELEFONO', 'CORREO ELECTRONICO', 'USUARIO REALIZA VENTA', 'TOTAL VENTA', 'FECHA VENTA REALIZADA'];
+
+        $query = SalesHeader::with(['customer.typeDocument', 'user'])
+            ->join('customers as c', 'sales_headers.id_customer', '=', 'c.id')
+            ->join('users as u', 'sales_headers.id_user', '=', 'u.id')
+            ->join('type_documents as t', 'c.id_type', '=', 't.id')
+            ->selectRaw('
+                CONCAT(c.first_name, " ", c.last_name) as customer_name,
+                t.name_document,
+                c.document,
+                c.phone,
+                c.email,
+                CONCAT(u.first_name, " ", u.last_name) as user,
+                sales_headers.total_sale,
+                sales_headers.date_sale
+            ')
+            ->where(function ($query) use ($search, $startDate, $endDate) {
+                
+                if ($search > 0) {
+                    $query->where('c.document', 'LIKE', '%' . $search . '%');
+                }
+
+                if ($startDate <> 0) {
+                    $query->whereDate('sales_headers.date_sale', '>=', Carbon::parse($startDate));
+                }
+
+                if ($endDate <> 0) {
+                    $query->whereDate('sales_headers.date_sale', '<=', Carbon::parse($endDate));
+                }
+            });
+
+        //dd($query->toSql(), $query->getBindings());
+
+        $data = $query->get();
+
+        $dataArray = $data->map(function($item) {
+            return [
+                $item->customer_name,
+                $item->name_document,
+                $item->document,
+                $item->phone,
+                $item->email,
+                $item->user,
+                $item->total_sale,
+                $item->date_sale
+            ];
+        })->toArray();
+
+        // Generación de la hoja de cálculo Excel
+        $sheet->fromArray(array_merge([$columns], $dataArray));
+
+        // Aplicar estilos
+        $styleArray = [
+            'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
+            'alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => ['rgb' => 'cb7400'],
+            ],
+        ];
+
+        $sheet->getStyle('A1:H1')->applyFromArray($styleArray);
+
+        foreach (range('A', 'H') as $column) {
+            $sheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+
+        return response()->stream(
+            function () use ($writer) {
+                $writer->save('php://output');
+            },
+            200,
+            [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => 'attachment; filename="Reporte Ventas Actuales' . now()->format('Y-m-d') . '.xlsx"',
+            ]
+        );
+    }
 
 }

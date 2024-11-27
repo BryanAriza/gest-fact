@@ -41,7 +41,7 @@
 
                                         <th class="table-th text-white text-center">ID</th>
                                         <th class="table-th text-white text-center">DESCRIPCIÓN</th>
-                                        <th class="table-th text-white text-center">ACTIONS</th>
+                                        <th class="table-th text-white text-center">ACCIONES</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -203,20 +203,50 @@
 
         window.livewire.on('role-added', Msg => {
             $('#theModal').modal('hide')
-            noty(Msg)
+            swal({
+                title: 'Rol Creado!',
+                text: Msg,
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1600
+            })
         })
         window.livewire.on('role-updated', Msg => {
             $('#theModal').modal('hide')
-            noty(Msg)
+            swal({
+                title: 'Rol Actualizado!',
+                text: Msg,
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1600
+            })
         })
         window.livewire.on('role-deleted', Msg => {
-            noty(Msg)
+            swal({
+                title: 'Rol Eliminado!',
+                text: Msg,
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1600
+            })
         })
         window.livewire.on('role-exists', Msg => {
-            noty(Msg)
+            swal({
+                title: 'Rol ya existe!',
+                text: Msg,
+                type: 'success',
+                showConfirmButton: false,
+                timer: 1600
+            })
         })
         window.livewire.on('role-error', Msg => {
-            noty(Msg)
+            swal({
+                title: 'Se ha producido un error. Vuelve a intentarlo!',
+                text: Msg,
+                type: 'error',
+                showConfirmButton: false,
+                timer: 1600
+            })
         })
         window.livewire.on('hide-modal', Msg => {
             $('#theModal').modal('hide')

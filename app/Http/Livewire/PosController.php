@@ -148,9 +148,9 @@ class PosController extends Component
 	// guardar venta
 	public function saveSale()
 	{
-        $this->loading = true;
+		$this->loading = true;
 
-        $this->validate($this->rules, $this->messages);
+		$this->validate($this->rules, $this->messages);
 
 		if ($this->total <= 0) {
 			$this->emit('sale-error', 'AGREGA PRODUCTOS A LA VENTA');
@@ -169,38 +169,44 @@ class PosController extends Component
 
 		try {
 
-            $fechaActual = date('Y-m-d');
+			$fechaActual = date('Y-m-d');
 
+			// Crear el encabezado de la venta
 			$sale = SalesHeader::create([
-                'id_customer' => $this->idCustomer,
-                'id_user' => Auth()->user()->id,
+				'id_customer' => $this->idCustomer,
+				'id_user' => Auth()->user()->id,
 				'total_sale' => $this->total,
 				'date_sale' => $fechaActual,
-				
 			]);
 
 			if ($sale) {
+				// Obtener los productos del carrito
 				$items = Cart::getContent();
-				foreach ($items as  $item) {
+				$productIds = $items->pluck('id')->toArray();  // Obtener los IDs de los productos en el carrito
+				$products = Product::whereIn('id', $productIds)->get()->keyBy('id');  // Obtener todos los productos de una vez
+
+				foreach ($items as $item) {
+					// Crear los detalles de la venta
 					SalesDetail::create([
 						'id_sales_header' => $sale->id,
-                        'id_product' => $item->id,
-                        'product_name' => $item->name,
+						'id_product' => $item->id,
+						'product_name' => $item->name,
 						'cant_product' => $item->quantity,
-                        'unit_price' => $item->price,
-						
+						'unit_price' => $item->price,
 					]);
 
-					//update stock
-					$product = Product::find($item->id);
-					$product->stock = $product->stock - $item->quantity;
-					$product->save();
+					// Actualizar el stock en memoria (sin hacer consultas adicionales a la base de datos)
+					if (isset($products[$item->id])) {
+						$products[$item->id]->stock -= $item->quantity;
+						$products[$item->id]->save();  // Guardar la actualización de stock
+					}
 				}
 			}
 
-
 			DB::commit();
-			//$this->printTicket($sale->id);
+
+			// Limpiar el carrito y resetear los valores
+
 			Cart::clear();
 			$this->efectivo = 0;
 			$this->change = 0;
@@ -208,14 +214,12 @@ class PosController extends Component
 			$this->itemsQuantity = Cart::getTotalQuantity();
 			$this->emit('sale-ok', 'Venta registrada con éxito');
 
-            $this->documentNum='';
-            $this->first_name='';
-			
-            $ticket = $this->buildTicket($sale);
-			//$d = $this->Encrypt($ticket);
-			//$this->emit('print-ticket', $d);
-			//$this->emit('print-ticket', $sale->id);
-            
+			// Limpiar variables de documentos
+			$this->documentNum = '';
+			$this->first_name = '';
+
+			// Construir el ticket (si es necesario)
+			$ticket = $this->buildTicket($sale);
 
 		} catch (Exception $e) {
 			DB::rollback();

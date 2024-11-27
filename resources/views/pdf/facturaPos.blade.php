@@ -6,7 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Factura de Compra</title>
+
+    <title>Comprobante de Pago</title>
 
     <!-- ruta física relativa OS -->
     <link rel="stylesheet" href="{{ public_path('css/custom_pdf.css') }}">
@@ -33,7 +34,8 @@
 
                 <td width="70%" class="text-center text-company" style="vertical-align: top; padding-top: 10px">
                     <br>
-                    <span style="font-size: 25px; font-weight: bold;">FACTURA DE COMPRA</span>
+                    <span style="font-size: 25px; font-weight: bold;">COMPROBANTE DE PAGO</span>
+
 
                 </td>
             </tr>
@@ -48,9 +50,11 @@
         <section style="margin-top: -110px">
             <section style="margin-top: -50px">
                 <h4>
-                    COMPRA REALIZADA POR:&nbsp;{{$dataHea->name_customer .' '.$dataHea->last_customer}}<br>
+
+                    CLIENTE:&nbsp;{{$dataHea->name_customer .' '.$dataHea->last_customer}}<br>
                     IDENTIFICACIÓN:&nbsp;{{$dataHea->name_document .' - '.$dataHea->docu}}<br>
-                    FACTURADOR:&nbsp;{{$dataHea->first_name .' '.$dataHea->last_name}}
+                    VENDEDOR:&nbsp;{{$dataHea->first_name .' '.$dataHea->last_name}}
+
 
                 </h4>
             </section>

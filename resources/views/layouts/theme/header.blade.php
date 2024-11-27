@@ -2,6 +2,9 @@
 
 <div class="header-container fixed-top">
     <header class="header navbar navbar-expand-sm" style="background-color:#6a5330 !important;">
+        
+        
+        
         <ul class="navbar-item flex-row">
 
             <a href="javascript:void(0);" class="sidebarCollapse" data-placement="bottom"><svg
@@ -11,14 +14,13 @@
                     <line x1="8" y1="6" x2="21" y2="6"></line>
                     <line x1="8" y1="12" x2="21" y2="12"></line>
                     <line x1="8" y1="18" x2="21" y2="18"></line>
-                    <line x1="3" y1="6" x2="3" y2="6"></line>
-                    <line x1="3" y1="12" x2="3" y2="12"></line>
-                    <line x1="3" y1="18" x2="3" y2="18"></line>
                 </svg>
             </a>
 
 
         </ul>
+        <img src="{{ asset('assets/img/logo-fast.ico') }}" alt="logo" style="width:5%;text-align: center;" onclick="window.location.href='{{ url('dashboard') }}';">
+        <h1 style="color:white;">Gest-Fact</h1>
 
 
         <livewire:search-controller>
@@ -27,18 +29,20 @@
 
 
                 <li class="nav-item dropdown user-profile-dropdown  order-lg-0 order-1">
+                    
                     <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="far fa-user text-dark"></i>
+                        <i class="fas fa-user-cog text-dark"></i>
                     </a>
                     <div class="dropdown-menu position-absolute animated fadeInUp"
                         aria-labelledby="userProfileDropdown">
                         <div class="user-profile-section">
                             <div class="media mx-auto">
-                                <img src="{{ asset('assets/img/avatar.jpg') }}" class="img-fluid mr-2" alt="avatar">
+                                <img src="{{ Auth::user()->image ? asset('storage/users/' . Auth::user()->image) : asset('assets/img/avatar.jpg') }}" 
+                                     class="img-fluid mr-2" alt="avatar">
                                 <div class="media-body">
-                                    <h5>{{Auth()->user()->first_name}}</h5>
-                                    <p>{{auth()->user()->rol}}</p>
+                                    <h5>{{ Auth::user()->first_name }}</h5>
+                                    <p>{{ Auth::user()->rol }}</p>
                                 </div>
                             </div>
                         </div>

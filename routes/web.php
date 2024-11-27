@@ -14,6 +14,7 @@ use App\Http\Controllers\ExportController;
 use App\Http\Livewire\ProductsController;
 use App\Http\Livewire\ProfileController;
 use App\Http\Livewire\PasswordController;
+use App\Http\Livewire\ReportVentasController;
 
 
 
@@ -47,6 +48,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/products', ProductsController::class);
         Route::get('/categories', CategoriesController::class);
+
     });
 
     Route::group(['middleware' => ['role_or_permission:ADMIN|FACTURADOR|Customer_Index']], function () {
@@ -63,7 +65,11 @@ Route::middleware(['auth'])->group(function () {
     
     });
 
+    
+    
     Route::group(['middleware' => ['role_or_permission:ADMIN|FACTURADOR|Reports_Index']], function () {
+
+        Route::get('/reporVentas', ReportVentasController::class);
 
         //reportes EXCEL
         Route::get('/reportProduct/excel/', [ExportController::class, 'reportProducts']);
@@ -85,10 +91,24 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/reportCliente/excel/', [ExportController::class, 'reportCustomer']);
         Route::get('/reportCliente/excel/{f1}', [ExportController::class, 'reportCustomer']);
         
+        Route::get('/reportSales/excel/', [ExportController::class, 'reportSales']);
+        Route::get('/reportSales/excel/{f1}', [ExportController::class, 'reportSales']);
+        Route::get('/reportSales/excel/{f1}/{f2}', [ExportController::class, 'reportSales']);
+        Route::get('/reportSales/excel/{f1}/{f2}/{f3}', [ExportController::class, 'reportSales']);
         
-        // Route::get('/reportDeta/excel/', [ExportController::class, 'reportEspeDeta']);
-        // Route::get('/reportCitas/excel/{f1}/{f2}', [ExportController::class, 'reportCitas']);
-        // Route::get('/reportDetaCi/excel/{f1}/{f2}', [ExportController::class, 'reportCitaDet']);        
+
+        Route::get('/download-invoice/{document}/{date}/{id_header}', function ($document, $date, $id_header) {
+            $filePath = public_path('facturas/factura_' . $document . '_' . $date . '_' . $id_header . '.pdf');
+        
+            if (!file_exists($filePath)) {
+                abort(404, 'La factura no se encontró.');
+            }
+        
+            return response()->file($filePath, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'attachment; filename="factura_' . $document . '.pdf"',
+            ]);
+        });
         
     });
 

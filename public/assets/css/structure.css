@@ -659,7 +659,8 @@ code {
   max-width: 13rem;
   padding: 0 11px;
   top: 56px;
-  left: -123px; }
+  left: -123px; 
+  min-width: 12rem; }
   .navbar .navbar-item .nav-item.user-profile-dropdown .dropdown-menu .user-profile-section {
     padding: 16px 14px;
     border-top-left-radius: 4px;

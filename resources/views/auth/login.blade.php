@@ -33,7 +33,7 @@
                             @csrf
                             <div class="form">
                                 <div id="username-field" class="field-wrapper input">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round" class="feather feather-user">
                                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -51,7 +51,7 @@
                                 </div>
 
                                 <div id="password-field" class="field-wrapper input mb-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round" class="feather feather-lock">
                                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
@@ -67,7 +67,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="field-wrapper input text-center">
+                                <div class="field-wrapper-captcha input" style="align-items: center;">
                                     {!! NoCaptcha::renderJs() !!}
                                     {!! NoCaptcha::display() !!}
 
@@ -86,7 +86,7 @@
 
                             </div>
                         </form>
-                        <p class="terms-conditions text-center">© 2023 All Rights Reserved. <a
+                        <p class="terms-conditions text-center">© 2024 All Rights Reserved. <a
                                 href="" target="">Gest-Fact</a>
                             <br>versión 1.0
                         </p>

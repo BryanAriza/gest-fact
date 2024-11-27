@@ -22,7 +22,7 @@
 							<tr>
 								<th class="table-th text-white">DESCRIPCIÓN</th>
 								<th class="table-th text-white">IMAGEN</th>
-								<th class="table-th text-white">ACTIONS</th>
+								<th class="table-th text-white">ACCIONES</th>
 							</tr>
 						</thead>
 						<tbody>

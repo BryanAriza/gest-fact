@@ -52,20 +52,20 @@ class UsersController extends Component
 
    public function resetUI()
    {
-    $this->first_name ='';
-    $this->last_name='';
-    $this->rol='';
-    $this->id_type='';
-    $this->document='';
-    $this->phone='';
-    $this->email ='';
-    $this->password ='';
-    $this->selectTypeDoc =0;
-    $this->status ='Elegir';
-    $this->selected_id =0;
-    $this->resetValidation();
-    $this->resetPage();
-}
+        $this->first_name ='';
+        $this->last_name='';
+        $this->rol='';
+        $this->id_type='';
+        $this->document='';
+        $this->phone='';
+        $this->email ='';
+        $this->password ='';
+        $this->selectTypeDoc =0;
+        $this->status ='Elegir';
+        $this->selected_id =0;
+        $this->resetValidation();
+        $this->resetPage();
+    }
 
 
     public function edit(User $user)

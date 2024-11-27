@@ -3,15 +3,25 @@
     <nav id="compactSidebar">
 
         <ul class="menu-categories">
-
-            <br>
-            <li class="menu">
-
-                <img src="{{ asset('assets/img/logo-fast.ico') }}" alt="logo" style="width:100%;text-align: center;">
-
+            @can('Reports_Index')
+            <li class="">
+                <a href="{{url('dashboard')}}" class="menu-toggle" data-active="false">
+                    <div class="base-menu">
+                        <div class="base-icons">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-grid">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                        </div>
+                        <span>DASHBOARD</span>
+                    </div>
+                </a>
             </li>
-            <br>
-            <br>
+            @endcan
 
             @can('Gest_Index')
             <li class="menu">
@@ -247,6 +257,26 @@
         @endcan
 
 
+        @can('Reports_Index')
+        <div class="submenu" id="uiReports">
+            <ul class="submenu-list" data-parent-element="#uiKit">
+
+                <li>
+                    <a href="{{url('reporVentas')}}"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 18 18">
+                                <path
+                                    d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V9H3V2a1 1 0 0 1 1-1h5.5zM3 12v-2h2v2zm0 1h2v2H4a1 1 0 0 1-1-1zm3 2v-2h3v2zm4 0v-2h3v1a1 1 0 0 1-1 1zm3-3h-3v-2h3zm-7 0v-2h3v2z" />
+                            </svg>
+
+
+                        REPORTE VENTAS REALIZADAS</a>
+                </li>
+
+            </ul>
+        </div>
+        @endcan
+
+
 
     </div>
 </div>
@@ -256,7 +286,7 @@
 
 <style>
 .sidebar-wrapper #compactSidebar .menu-categories a.menu-toggle:hover {
-    background: #858688;
+    background: #f1a40b;
     border-radius: 15px;
 }
 </style>

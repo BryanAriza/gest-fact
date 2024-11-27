@@ -16,4 +16,11 @@ class Customer extends Model
     {
         return $this->hasMany(SalesHeader::class, 'id_customer');
     }
+
+
+    public function typeDocument()
+    {
+        return $this->belongsTo(TypeDocument::class, 'id_type');
+    }
+
 }
